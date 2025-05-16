@@ -1,0 +1,6 @@
+body { font-family: sans-serif; margin: 0; padding: 0; background: #fff; color: #000; }
+header { background: #E60000; color: white; padding: 1rem; text-align: center; }
+main { padding: 1rem; }
+form { display: flex; flex-direction: column; gap: 0.5rem; }
+button { padding: 0.5rem; background: #E60000; color: white; border: none; border-radius: 4px; }
+#bilan { margin-top: 2rem; }
