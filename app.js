@@ -11,128 +11,123 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalElement = document.getElementById("total");
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+
+  function removeAccents(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
   function updateHistorique() {
-	   historiqueTableBody.innerHTML = "";
-  let total = 0;
+    historiqueTableBody.innerHTML = "";
+    let total = 0;
 
-  interventions.forEach((item, index) => {
-    const tr = document.createElement("tr");
+    interventions.forEach((item, index) => {
+      const tr = document.createElement("tr");
 
-    // Supprimer
-    const tdDel = document.createElement("td");
-    tdDel.setAttribute("data-label", "Supprimer");
-    const btnDel = document.createElement("button");
-    btnDel.textContent = "🗑️";
-    btnDel.title = "Supprimer cette intervention";
-    btnDel.style.cursor = "pointer";
-    btnDel.addEventListener("click", () => {
-      if (confirm(`Supprimer l'intervention ${item.geton} ?`)) {
-        interventions.splice(index, 1);
-        localStorage.setItem("interventions", JSON.stringify(interventions));
-        updateHistorique();
+      const tdDel = document.createElement("td");
+      tdDel.setAttribute("data-label", "Supprimer");
+      const btnDel = document.createElement("button");
+      btnDel.textContent = "🗑️";
+      btnDel.title = "Supprimer cette intervention";
+      btnDel.style.cursor = "pointer";
+      btnDel.addEventListener("click", () => {
+        if (confirm(`Supprimer l'intervention ${item.geton} ?`)) {
+          interventions.splice(index, 1);
+          localStorage.setItem("interventions", JSON.stringify(interventions));
+          updateHistorique();
+        }
+      });
+      tdDel.appendChild(btnDel);
+      tr.appendChild(tdDel);
+
+      const tdDate = document.createElement("td");
+      tdDate.setAttribute("data-label", "Date");
+      const dateObj = new Date(item.date);
+      tdDate.textContent = dateObj.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+      tr.appendChild(tdDate);
+
+      const tdGeton = document.createElement("td");
+      tdGeton.setAttribute("data-label", "Geton");
+      tdGeton.textContent = item.geton;
+      tr.appendChild(tdGeton);
+
+      const tdType = document.createElement("td");
+      tdType.setAttribute("data-label", "Type");
+      tdType.textContent = item.type.toUpperCase();
+      tr.appendChild(tdType);
+
+      const tdSousType = document.createElement("td");
+      tdSousType.setAttribute("data-label", "Sous-type");
+      tdSousType.textContent = item.sousType;
+      tr.appendChild(tdSousType);
+
+      const tdResultat = document.createElement("td");
+      tdResultat.setAttribute("data-label", "Résultat");
+      tdResultat.textContent = item.resultat.toUpperCase();
+      tr.appendChild(tdResultat);
+
+      const tdEtatBox = document.createElement("td");
+      tdEtatBox.setAttribute("data-label", "État Box");
+
+      if (item.resultat === "success") {
+        const boxStateRaw = item.etatBox.trim();
+        const boxState = removeAccents(boxStateRaw.toLowerCase());
+
+        tdEtatBox.textContent = boxStateRaw.toUpperCase();
+
+        if (boxState === "ok") {
+          tdEtatBox.classList.add("etat-ok");
+        } else if (boxState === "etape 9" || boxState === "etape9") {
+          tdEtatBox.classList.add("etat-etape9");
+        } else {
+          tdEtatBox.classList.add("etat-nok");
+        }
+      } else {
+        tdEtatBox.textContent = "NOK";
+        tdEtatBox.classList.add("etat-nok");
+      }
+
+      tr.appendChild(tdEtatBox);
+
+      const tdMotif = document.createElement("td");
+      tdMotif.setAttribute("data-label", "Motif");
+      tdMotif.textContent = item.resultat === "echec" ? (item.motif || "--") : "--";
+      tr.appendChild(tdMotif);
+
+      historiqueTableBody.appendChild(tr);
+
+      if (item.resultat === "success") {
+        if (item.type === "installation") {
+          if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
+          else total += 45;
+        } else if (item.type === "plp") total += 20;
+        else if (item.type === "sav") total += 15;
       }
     });
-    tdDel.appendChild(btnDel);
-    tr.appendChild(tdDel);
 
-    // Date
-    const tdDate = document.createElement("td");
-    tdDate.setAttribute("data-label", "Date");
-    const dateObj = new Date(item.date);
-    tdDate.textContent = dateObj.toLocaleDateString("fr-FR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-    tr.appendChild(tdDate);
-
-    // Geton
-    const tdGeton = document.createElement("td");
-    tdGeton.setAttribute("data-label", "Geton");
-    tdGeton.textContent = item.geton;
-    tr.appendChild(tdGeton);
-
-    // Type
-    const tdType = document.createElement("td");
-    tdType.setAttribute("data-label", "Type");
-    tdType.textContent = item.type.toUpperCase();
-    tr.appendChild(tdType);
-
-    // Sous-type
-    const tdSousType = document.createElement("td");
-    tdSousType.setAttribute("data-label", "Sous-type");
-    tdSousType.textContent = item.sousType;
-    tr.appendChild(tdSousType);
-
-    // Résultat
-    const tdResultat = document.createElement("td");
-    tdResultat.setAttribute("data-label", "Résultat");
-    tdResultat.textContent = item.resultat.toUpperCase();
-    tr.appendChild(tdResultat);
-
-// État Box
-const tdEtatBox = document.createElement("td");
-tdEtatBox.setAttribute("data-label", "État Box");
-
-if (item.resultat === "success") {
-  const boxStateRaw = item.etatBox.trim();
-  const boxState = boxStateRaw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // supprime les accents
-
-  tdEtatBox.textContent = boxStateRaw.toUpperCase(); // Affiche avec majuscules
-
-  if (boxState === "ok") {
-    tdEtatBox.classList.add("etat-ok");
-  } else if (boxState === "etape 9" || boxState === "etape9") {
-    tdEtatBox.classList.add("etat-etape9");
-  } else {
-    tdEtatBox.classList.add("etat-nok");
-  }
-} else {
-  tdEtatBox.textContent = "NOK";
-  tdEtatBox.classList.add("etat-nok");
-}
-
-tr.appendChild(tdEtatBox);
-
-    // Motif
-    const tdMotif = document.createElement("td");
-    tdMotif.setAttribute("data-label", "Motif");
-    if (item.resultat === "echec") {
-      tdMotif.textContent = item.motif || "--";
-    } else {
-      tdMotif.textContent = "--";
-    }
-    tr.appendChild(tdMotif);
-
-    historiqueTableBody.appendChild(tr);
-
-    // Calcul total
-    if (item.resultat === "success") {
-      if (item.type === "installation") {
-        if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
-        else total += 45;
-      } else if (item.type === "plp") total += 20;
-      else if (item.type === "sav") total += 15;
-    }
-  });
-
-  totalElement.textContent = `${total}€`;
-
+    totalElement.textContent = `${total}€`;
   }
 
   function isGetonUnique(geton) {
     return !interventions.some(item => item.geton === geton);
   }
 
-  resultatInput.addEventListener("change", () => {
-    const value = resultatInput.value;
+  // Gère affichage dynamique au changement de sélection
+  function handleResultatDisplay(value) {
     etatBoxContainer.style.display = value === "success" ? "block" : "none";
     motifInput.style.display = value === "echec" ? "block" : "none";
+  }
+
+  // Initialiser l'affichage selon la valeur par défaut
+  handleResultatDisplay(resultatInput.value);
+
+  resultatInput.addEventListener("change", () => {
+    handleResultatDisplay(resultatInput.value);
   });
 
   form.addEventListener("submit", (e) => {
@@ -163,7 +158,9 @@ tr.appendChild(tdEtatBox);
     localStorage.setItem("interventions", JSON.stringify(interventions));
     updateHistorique();
     form.reset();
-    motifInput.style.display = "none";
+
+    // Remettre l'affichage correct selon la valeur actuelle de resultat
+    handleResultatDisplay(resultatInput.value);
   });
 
   updateHistorique();
