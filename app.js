@@ -79,27 +79,24 @@ function removeAccents(str) {
 const tdEtatBox = document.createElement("td");
 tdEtatBox.setAttribute("data-label", "État Box");
 
-let etatBoxText = "";
-let etatBoxClass = "";
-
 if (item.resultat === "success") {
-  etatBoxText = item.etatBox.trim().toUpperCase();
-  const normalized = removeAccents(etatBoxText);  // On enlève les accents
+  const boxStateRaw = item.etatBox.trim();
+  const boxState = boxStateRaw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // supprime les accents
 
-  if (normalized === "OK") {
-    etatBoxClass = "etat-ok";
-  } else if (normalized === "ETAPE 9") {
-    etatBoxClass = "etat-etape9";
+  tdEtatBox.textContent = boxStateRaw.toUpperCase(); // Affiche avec majuscules
+
+  if (boxState === "ok") {
+    tdEtatBox.classList.add("etat-ok");
+  } else if (boxState === "etape 9" || boxState === "etape9") {
+    tdEtatBox.classList.add("etat-etape9");
   } else {
-    etatBoxClass = "etat-unknown";
+    tdEtatBox.classList.add("etat-nok");
   }
 } else {
-  etatBoxText = "NOK";
-  etatBoxClass = "etat-nok";
+  tdEtatBox.textContent = "NOK";
+  tdEtatBox.classList.add("etat-nok");
 }
 
-tdEtatBox.textContent = etatBoxText;
-tdEtatBox.classList.add(etatBoxClass);
 tr.appendChild(tdEtatBox);
 
     // Motif
