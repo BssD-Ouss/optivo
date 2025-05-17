@@ -110,7 +110,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    totalElement.textContent = `${total}€`;
+    //totalElement.textContent = `${total}€`;
+	// Statistiques
+const totalCount = interventions.length;
+const successCount = interventions.filter(i => i.resultat === "success").length;
+const echecCount = interventions.filter(i => i.resultat === "echec").length;
+
+const successRate = totalCount > 0 ? ((successCount / totalCount) * 100).toFixed(1) : 0;
+const echecRate = totalCount > 0 ? ((echecCount / totalCount) * 100).toFixed(1) : 0;
+
+// Mise à jour du dashboard
+document.getElementById("stat-total").textContent = totalCount;
+document.getElementById("stat-success-count").textContent = successCount;
+document.getElementById("stat-success-rate").textContent = `${successRate}%`;
+document.getElementById("stat-echec-count").textContent = echecCount;
+document.getElementById("stat-echec-rate").textContent = `${echecRate}%`;
+document.getElementById("stat-total-gain").textContent = `${total}€`;
   }
 
   function isGetonUnique(geton) {

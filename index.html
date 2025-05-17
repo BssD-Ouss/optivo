@@ -9,6 +9,24 @@
 </head>
 <body>
   <h1>Optivo - Mon Bilan Fibre</h1>
+  <div class="dashboard">
+  <div class="card total">
+    <h3>Total interventions</h3>
+    <p id="stat-total">0</p>
+  </div>
+  <div class="card success">
+    <h3>Succès</h3>
+    <p><strong id="stat-success-count">0</strong> <span>(<span id="stat-success-rate">0%</span>)</span></p>
+  </div>
+  <div class="card echec">
+    <h3>Échecs</h3>
+    <p><strong id="stat-echec-count">0</strong> <span>(<span id="stat-echec-rate">0%</span>)</span></p>
+  </div>
+  <div class="card gain">
+    <h3>Gains</h3>
+    <p><strong id="stat-total-gain">0€</strong></p>
+  </div>
+</div>
   <form id="interventionForm">
     <input type="text" id="geton" placeholder="Geton (identifiant unique)" required />
     <select id="type">
