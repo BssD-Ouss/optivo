@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalElement = document.getElementById("total");
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
-
+function removeAccents(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
   function updateHistorique() {
 	   historiqueTableBody.innerHTML = "";
   let total = 0;
@@ -73,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tdResultat.textContent = item.resultat.toUpperCase();
     tr.appendChild(tdResultat);
 
-  // État Box
+// État Box
 const tdEtatBox = document.createElement("td");
 tdEtatBox.setAttribute("data-label", "État Box");
 
@@ -81,21 +83,23 @@ let etatBoxText = "";
 let etatBoxClass = "";
 
 if (item.resultat === "success") {
-  etatBoxText = item.etatBox.toUpperCase();
-  if (etatBoxText === "OK") {
-    etatBoxClass = "etat-ok";       // vert
-  } else if (etatBoxText === "ETAPE 9") {
-    etatBoxClass = "etat-etape9";   // orange
+  etatBoxText = item.etatBox.trim().toUpperCase();
+  const normalized = removeAccents(etatBoxText);  // On enlève les accents
+
+  if (normalized === "OK") {
+    etatBoxClass = "etat-ok";
+  } else if (normalized === "ETAPE 9") {
+    etatBoxClass = "etat-etape9";
   } else {
-    etatBoxClass = "etat-unknown";  // au cas où autre chose
+    etatBoxClass = "etat-unknown";
   }
 } else {
   etatBoxText = "NOK";
-  etatBoxClass = "etat-nok";       // rouge
+  etatBoxClass = "etat-nok";
 }
 
 tdEtatBox.textContent = etatBoxText;
-if (etatBoxClass) tdEtatBox.classList.add(etatBoxClass);
+tdEtatBox.classList.add(etatBoxClass);
 tr.appendChild(tdEtatBox);
 
     // Motif
