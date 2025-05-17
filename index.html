@@ -3,45 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#E60000"/>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
-  <script src="app.js" defer></script>
   <title>Optivo</title>
 </head>
 <body>
-  <header>
-    <h1>Optivo</h1>
-    <p>Mon Bilan Fibre</p>
-  </header>
-  <main>
-    <form id="intervention-form">
-      <input type="text" id="geton" placeholder="Geton unique" required />
-      <select id="type">
-        <option value="installation">Installation</option>
-        <option value="plp">PLP</option>
-        <option value="sav">SAV</option>
+  <h1>Optivo - Mon Bilan Fibre</h1>
+  <form id="interventionForm">
+    <input type="text" id="geton" placeholder="Geton (identifiant unique)" required />
+    <select id="type">
+      <option value="installation">Installation complète</option>
+      <option value="plp">PLP</option>
+      <option value="sav">SAV</option>
+    </select>
+    <select id="sousType">
+      <option value="aerienne">Aérienne</option>
+      <option value="facade">Façade</option>
+      <option value="souterrain">Sous-terrain</option>
+      <option value="aerosouterrain">Aéro-souterrain</option>
+    </select>
+    <select id="resultat">
+      <option value="success">Effectué avec succès</option>
+      <option value="echec">Échec</option>
+    </select>
+    <div id="etatBoxContainer">
+      <label for="etatBox">État de la box :</label>
+      <select id="etatBox">
+        <option value="ok">OK</option>
+        <option value="etape9">Étape 9</option>
       </select>
-      <select id="resultat">
-        <option value="succes">Succès</option>
-        <option value="echec">Échec</option>
-      </select>
-      <div id="succes-fields" style="display:none;">
-        <select id="etatBox">
-          <option value="ok">Box OK</option>
-          <option value="etape9">Étape 9</option>
-        </select>
-      </div>
-      <div id="echec-fields" style="display:none;">
-        <input type="text" id="motifEchec" placeholder="Motif de l'échec" />
-      </div>
-      <button type="submit">Ajouter</button>
-    </form>
-    <section id="bilan">
-      <h2>Bilan</h2>
-      <ul id="liste-interventions"></ul>
-      <p id="total-gain">Gain total : 0€</p>
-    </section>
-  </main>
+    </div>
+    <input type="text" id="motif" placeholder="Motif de l'échec" style="display: none;" />
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <h2>Historique</h2>
+  <ul id="historique"></ul>
+  <h3>Total Gagné : <span id="total">0€</span></h3>
+
+  <script src="app.js"></script>
 </body>
 </html>

@@ -1,64 +1,79 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('intervention-form');
-  const geton = document.getElementById('geton');
-  const type = document.getElementById('type');
-  const resultat = document.getElementById('resultat');
-  const etatBox = document.getElementById('etatBox');
-  const motifEchec = document.getElementById('motifEchec');
-  const succesFields = document.getElementById('succes-fields');
-  const echecFields = document.getElementById('echec-fields');
-  const liste = document.getElementById('liste-interventions');
-  const totalGain = document.getElementById('total-gain');
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("interventionForm");
+  const getonInput = document.getElementById("geton");
+  const typeInput = document.getElementById("type");
+  const sousTypeInput = document.getElementById("sousType");
+  const resultatInput = document.getElementById("resultat");
+  const etatBoxInput = document.getElementById("etatBox");
+  const motifInput = document.getElementById("motif");
+  const etatBoxContainer = document.getElementById("etatBoxContainer");
+  const historiqueList = document.getElementById("historique");
+  const totalElement = document.getElementById("total");
 
-  let interventions = JSON.parse(localStorage.getItem('interventions')) || [];
+  let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
 
-  const gainMap = {
-    installation: 50,
-    plp: 20,
-    sav: 15
-  };
-
-  function updateBilan() {
-    liste.innerHTML = '';
+  function updateHistorique() {
+    historiqueList.innerHTML = "";
     let total = 0;
-    interventions.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = `${item.date} - ${item.geton} - ${item.type} - ${item.resultat}`;
-      liste.appendChild(li);
-      if (item.resultat === 'succes') {
-        total += gainMap[item.type] || 0;
+
+    interventions.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = `#${item.geton} - ${item.type.toUpperCase()} (${item.sousType}) - ${item.resultat.toUpperCase()}${item.resultat === "success" ? " - État Box: " + item.etatBox.toUpperCase() : " - Motif: " + item.motif}`;
+      
+      if (item.resultat === "success") {
+        if (item.type === "installation") {
+          if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
+          else total += 45;
+        } else if (item.type === "plp") total += 20;
+        else if (item.type === "sav") total += 15;
       }
+
+      historiqueList.appendChild(li);
     });
-    totalGain.textContent = `Gain total : ${total}€`;
+
+    totalElement.textContent = `${total}€`;
   }
 
-  resultat.addEventListener('change', () => {
-    if (resultat.value === 'succes') {
-      succesFields.style.display = 'block';
-      echecFields.style.display = 'none';
-    } else {
-      succesFields.style.display = 'none';
-      echecFields.style.display = 'block';
-    }
+  function isGetonUnique(geton) {
+    return !interventions.some(item => item.geton === geton);
+  }
+
+  resultatInput.addEventListener("change", () => {
+    const value = resultatInput.value;
+    etatBoxContainer.style.display = value === "success" ? "block" : "none";
+    motifInput.style.display = value === "echec" ? "block" : "none";
   });
 
-  form.addEventListener('submit', e => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const newItem = {
-      geton: geton.value,
-      type: type.value,
-      resultat: resultat.value,
-      etatBox: resultat.value === 'succes' ? etatBox.value : null,
-      motifEchec: resultat.value === 'echec' ? motifEchec.value : null,
-      date: new Date().toLocaleDateString('fr-FR')
+    const geton = getonInput.value.trim();
+    const type = typeInput.value;
+    const sousType = sousTypeInput.value;
+    const resultat = resultatInput.value;
+    const etatBox = etatBoxInput.value;
+    const motif = motifInput.value.trim();
+
+    if (!isGetonUnique(geton)) {
+      alert("Ce geton existe déjà !");
+      return;
+    }
+
+    const newEntry = {
+      geton,
+      type,
+      sousType,
+      resultat,
+      etatBox: resultat === "success" ? etatBox : "",
+      motif: resultat === "echec" ? motif : "",
+      date: new Date().toISOString()
     };
-    interventions.push(newItem);
-    localStorage.setItem('interventions', JSON.stringify(interventions));
+
+    interventions.push(newEntry);
+    localStorage.setItem("interventions", JSON.stringify(interventions));
+    updateHistorique();
     form.reset();
-    succesFields.style.display = 'none';
-    echecFields.style.display = 'none';
-    updateBilan();
+    motifInput.style.display = "none";
   });
 
-  updateBilan();
+  updateHistorique();
 });
