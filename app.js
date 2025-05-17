@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
 
   function updateHistorique() {
-	   historiqueTableBody.innerHTML = "";
+	    historiqueTableBody.innerHTML = "";
   let total = 0;
 
   interventions.forEach((item, index) => {
@@ -67,14 +67,23 @@ document.addEventListener("DOMContentLoaded", () => {
     tdResultat.textContent = item.resultat.toUpperCase();
     tr.appendChild(tdResultat);
 
-    // Colonne État Box / Motif
-    const tdEtatMotif = document.createElement("td");
+    // Colonne État Box (OK, ETAPE 9 ou NOK)
+    const tdEtatBox = document.createElement("td");
     if (item.resultat === "success") {
-      tdEtatMotif.textContent = `État Box: ${item.etatBox.toUpperCase()}`;
+      tdEtatBox.textContent = item.etatBox.toUpperCase(); // OK ou ETAPE 9
     } else {
-      tdEtatMotif.textContent = `Motif: ${item.motif}`;
+      tdEtatBox.textContent = "NOK";
     }
-    tr.appendChild(tdEtatMotif);
+    tr.appendChild(tdEtatBox);
+
+    // Colonne Motif (motif si échec, sinon "--")
+    const tdMotif = document.createElement("td");
+    if (item.resultat === "echec") {
+      tdMotif.textContent = item.motif || "--";
+    } else {
+      tdMotif.textContent = "--";
+    }
+    tr.appendChild(tdMotif);
 
     historiqueTableBody.appendChild(tr);
 
@@ -89,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   totalElement.textContent = `${total}€`;
-
   }
 
   function isGetonUnique(geton) {
@@ -130,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("interventions", JSON.stringify(interventions));
     updateHistorique();
     form.reset();
-    etatBoxContainer.style.display = "none";
     motifInput.style.display = "none";
   });
 
