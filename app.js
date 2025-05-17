@@ -160,7 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
     form.reset();
 
     // Remettre l'affichage correct selon la valeur actuelle de resultat
-    handleResultatDisplay(resultatInput.value);
+setTimeout(() => {
+  handleResultatDisplay(resultatInput.value);
+}, 0);
   });
 
   updateHistorique();
