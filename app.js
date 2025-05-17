@@ -73,15 +73,24 @@ document.addEventListener("DOMContentLoaded", () => {
     tdResultat.textContent = item.resultat.toUpperCase();
     tr.appendChild(tdResultat);
 
-    // État Box
-    const tdEtatBox = document.createElement("td");
-    tdEtatBox.setAttribute("data-label", "État Box");
-    if (item.resultat === "success") {
-      tdEtatBox.textContent = item.etatBox.toUpperCase(); // OK ou ETAPE 9
-    } else {
-      tdEtatBox.textContent = "NOK";
-    }
-    tr.appendChild(tdEtatBox);
+  // État Box
+const tdEtatBox = document.createElement("td");
+tdEtatBox.setAttribute("data-label", "État Box");
+
+let etatBoxText = "";
+let etatBoxClass = "";
+
+if (item.resultat === "success") {
+  etatBoxText = item.etatBox.toUpperCase();
+  etatBoxClass = etatBoxText === "OK" ? "etat-ok" : "etat-nok";
+} else {
+  etatBoxText = "NOK";
+  etatBoxClass = "etat-nok";
+}
+
+tdEtatBox.textContent = etatBoxText;
+tdEtatBox.classList.add(etatBoxClass);
+tr.appendChild(tdEtatBox);
 
     // Motif
     const tdMotif = document.createElement("td");
