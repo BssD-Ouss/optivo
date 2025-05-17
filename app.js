@@ -13,70 +13,83 @@ document.addEventListener("DOMContentLoaded", () => {
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
 
   function updateHistorique() {
-    historiqueTableBody.innerHTML = "";
-    let total = 0;
+	   historiqueTableBody.innerHTML = "";
+  let total = 0;
 
-    interventions.forEach((item, index) => {
-      const tr = document.createElement("tr");
+  interventions.forEach((item, index) => {
+    const tr = document.createElement("tr");
 
-      // Colonne Supprimer
-      const tdDel = document.createElement("td");
-      const btnDel = document.createElement("button");
-      btnDel.textContent = "🗑️";
-      btnDel.title = "Supprimer cette intervention";
-      btnDel.style.cursor = "pointer";
-      btnDel.addEventListener("click", () => {
-        if (confirm(`Supprimer l'intervention ${item.geton} ?`)) {
-          interventions.splice(index, 1);
-          localStorage.setItem("interventions", JSON.stringify(interventions));
-          updateHistorique();
-        }
-      });
-      tdDel.appendChild(btnDel);
-      tr.appendChild(tdDel);
-
-      // Colonne Geton
-      const tdGeton = document.createElement("td");
-      tdGeton.textContent = item.geton;
-      tr.appendChild(tdGeton);
-
-      // Colonne Type
-      const tdType = document.createElement("td");
-      tdType.textContent = item.type.toUpperCase();
-      tr.appendChild(tdType);
-
-      // Colonne Sous-type
-      const tdSousType = document.createElement("td");
-      tdSousType.textContent = item.sousType;
-      tr.appendChild(tdSousType);
-
-      // Colonne Résultat
-      const tdResultat = document.createElement("td");
-      tdResultat.textContent = item.resultat.toUpperCase();
-      tr.appendChild(tdResultat);
-
-      // Colonne État Box / Motif
-      const tdEtatMotif = document.createElement("td");
-      if (item.resultat === "success") {
-        tdEtatMotif.textContent = `État Box: ${item.etatBox.toUpperCase()}`;
-      } else {
-        tdEtatMotif.textContent = `Motif: ${item.motif}`;
-      }
-      tr.appendChild(tdEtatMotif);
-
-      historiqueTableBody.appendChild(tr);
-
-      // Calcul total
-      if (item.resultat === "success") {
-        if (item.type === "installation") {
-          if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
-          else total += 45;
-        } else if (item.type === "plp") total += 20;
-        else if (item.type === "sav") total += 15;
+    // Colonne Supprimer
+    const tdDel = document.createElement("td");
+    const btnDel = document.createElement("button");
+    btnDel.textContent = "🗑️";
+    btnDel.title = "Supprimer cette intervention";
+    btnDel.style.cursor = "pointer";
+    btnDel.addEventListener("click", () => {
+      if (confirm(`Supprimer l'intervention ${item.geton} ?`)) {
+        interventions.splice(index, 1);
+        localStorage.setItem("interventions", JSON.stringify(interventions));
+        updateHistorique();
       }
     });
+    tdDel.appendChild(btnDel);
+    tr.appendChild(tdDel);
 
-    totalElement.textContent = `${total}€`;
+    // Colonne Date
+    const tdDate = document.createElement("td");
+    const dateObj = new Date(item.date);
+    tdDate.textContent = dateObj.toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+    tr.appendChild(tdDate);
+
+    // Colonne Geton
+    const tdGeton = document.createElement("td");
+    tdGeton.textContent = item.geton;
+    tr.appendChild(tdGeton);
+
+    // Colonne Type
+    const tdType = document.createElement("td");
+    tdType.textContent = item.type.toUpperCase();
+    tr.appendChild(tdType);
+
+    // Colonne Sous-type
+    const tdSousType = document.createElement("td");
+    tdSousType.textContent = item.sousType;
+    tr.appendChild(tdSousType);
+
+    // Colonne Résultat
+    const tdResultat = document.createElement("td");
+    tdResultat.textContent = item.resultat.toUpperCase();
+    tr.appendChild(tdResultat);
+
+    // Colonne État Box / Motif
+    const tdEtatMotif = document.createElement("td");
+    if (item.resultat === "success") {
+      tdEtatMotif.textContent = `État Box: ${item.etatBox.toUpperCase()}`;
+    } else {
+      tdEtatMotif.textContent = `Motif: ${item.motif}`;
+    }
+    tr.appendChild(tdEtatMotif);
+
+    historiqueTableBody.appendChild(tr);
+
+    // Calcul total
+    if (item.resultat === "success") {
+      if (item.type === "installation") {
+        if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
+        else total += 45;
+      } else if (item.type === "plp") total += 20;
+      else if (item.type === "sav") total += 15;
+    }
+  });
+
+  totalElement.textContent = `${total}€`;
+
   }
 
   function isGetonUnique(geton) {
