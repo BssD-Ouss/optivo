@@ -82,14 +82,20 @@ let etatBoxClass = "";
 
 if (item.resultat === "success") {
   etatBoxText = item.etatBox.toUpperCase();
-  etatBoxClass = etatBoxText === "OK" ? "etat-ok" : "etat-nok";
+  if (etatBoxText === "OK") {
+    etatBoxClass = "etat-ok";       // vert
+  } else if (etatBoxText === "ETAPE 9") {
+    etatBoxClass = "etat-etape9";   // orange
+  } else {
+    etatBoxClass = "etat-unknown";  // au cas où autre chose
+  }
 } else {
   etatBoxText = "NOK";
-  etatBoxClass = "etat-nok";
+  etatBoxClass = "etat-nok";       // rouge
 }
 
 tdEtatBox.textContent = etatBoxText;
-tdEtatBox.classList.add(etatBoxClass);
+if (etatBoxClass) tdEtatBox.classList.add(etatBoxClass);
 tr.appendChild(tdEtatBox);
 
     // Motif
