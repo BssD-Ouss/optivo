@@ -23,19 +23,24 @@ h1, h2 {
   margin-bottom: 10px;
 }
 
-/* Formulaire */
+/* Formulaire responsive */
 form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
 }
 
-form input, form select, form button, form textarea {
+form input,
+form select,
+form textarea,
+form button {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 form button {
@@ -44,7 +49,6 @@ form button {
   font-weight: bold;
   border: none;
   cursor: pointer;
-  grid-column: span 2;
   transition: background-color 0.2s ease;
 }
 
@@ -95,12 +99,8 @@ button {
   text-align: right;
 }
 
-/* Responsive */
+/* Responsive mobile */
 @media (max-width: 768px) {
-  form {
-    grid-template-columns: 1fr;
-  }
-
   table, thead, tbody, th, td, tr {
     display: block;
   }
@@ -115,13 +115,17 @@ button {
     padding: 10px;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background-color: #fff;
   }
 
   td {
     padding: 8px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 13px;
+    border: none;
+    border-bottom: 1px solid #eee;
   }
 
   td::before {
@@ -130,6 +134,7 @@ button {
     color: #555;
     flex: 1;
     margin-right: 10px;
+    text-align: left;
   }
 
   .total {
