@@ -13,14 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
 
   function updateHistorique() {
-	    historiqueTableBody.innerHTML = "";
+	   historiqueTableBody.innerHTML = "";
   let total = 0;
 
   interventions.forEach((item, index) => {
     const tr = document.createElement("tr");
 
-    // Colonne Supprimer
+    // Supprimer
     const tdDel = document.createElement("td");
+    tdDel.setAttribute("data-label", "Supprimer");
     const btnDel = document.createElement("button");
     btnDel.textContent = "🗑️";
     btnDel.title = "Supprimer cette intervention";
@@ -35,8 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
     tdDel.appendChild(btnDel);
     tr.appendChild(tdDel);
 
-    // Colonne Date
+    // Date
     const tdDate = document.createElement("td");
+    tdDate.setAttribute("data-label", "Date");
     const dateObj = new Date(item.date);
     tdDate.textContent = dateObj.toLocaleDateString("fr-FR", {
       day: "2-digit",
@@ -47,28 +49,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     tr.appendChild(tdDate);
 
-    // Colonne Geton
+    // Geton
     const tdGeton = document.createElement("td");
+    tdGeton.setAttribute("data-label", "Geton");
     tdGeton.textContent = item.geton;
     tr.appendChild(tdGeton);
 
-    // Colonne Type
+    // Type
     const tdType = document.createElement("td");
+    tdType.setAttribute("data-label", "Type");
     tdType.textContent = item.type.toUpperCase();
     tr.appendChild(tdType);
 
-    // Colonne Sous-type
+    // Sous-type
     const tdSousType = document.createElement("td");
+    tdSousType.setAttribute("data-label", "Sous-type");
     tdSousType.textContent = item.sousType;
     tr.appendChild(tdSousType);
 
-    // Colonne Résultat
+    // Résultat
     const tdResultat = document.createElement("td");
+    tdResultat.setAttribute("data-label", "Résultat");
     tdResultat.textContent = item.resultat.toUpperCase();
     tr.appendChild(tdResultat);
 
-    // Colonne État Box (OK, ETAPE 9 ou NOK)
+    // État Box
     const tdEtatBox = document.createElement("td");
+    tdEtatBox.setAttribute("data-label", "État Box");
     if (item.resultat === "success") {
       tdEtatBox.textContent = item.etatBox.toUpperCase(); // OK ou ETAPE 9
     } else {
@@ -76,8 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     tr.appendChild(tdEtatBox);
 
-    // Colonne Motif (motif si échec, sinon "--")
+    // Motif
     const tdMotif = document.createElement("td");
+    tdMotif.setAttribute("data-label", "Motif");
     if (item.resultat === "echec") {
       tdMotif.textContent = item.motif || "--";
     } else {
@@ -98,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   totalElement.textContent = `${total}€`;
+
   }
 
   function isGetonUnique(geton) {
