@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tdResultat.textContent = item.resultat.toUpperCase();
     tr.appendChild(tdResultat);
 
-   // État Box
+  // État Box
 const tdEtatBox = document.createElement("td");
 tdEtatBox.setAttribute("data-label", "État Box");
 
@@ -82,22 +82,15 @@ let etatBoxClass = "";
 
 if (item.resultat === "success") {
   etatBoxText = item.etatBox.toUpperCase();
-  if (etatBoxText === "OK") {
-    etatBoxClass = "etat-ok";       // vert
-  } else if (etatBoxText === "ETAPE 9") {
-    etatBoxClass = "etat-etape9";   // orange
-  } else {
-    etatBoxClass = "";              // aucune couleur si autre
-  }
+  etatBoxClass = etatBoxText === "OK" ? "etat-ok" : "etat-nok";
 } else {
   etatBoxText = "NOK";
-  etatBoxClass = "etat-nok";       // rouge
+  etatBoxClass = "etat-nok";
 }
 
 tdEtatBox.textContent = etatBoxText;
 tdEtatBox.classList.add(etatBoxClass);
 tr.appendChild(tdEtatBox);
-
 
     // Motif
     const tdMotif = document.createElement("td");
