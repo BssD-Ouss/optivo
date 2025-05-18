@@ -181,8 +181,7 @@ setTimeout(() => {
   });
 
   updateHistorique();
-});
-  // 🎯 Prévisions - ajout à la fin
+    // 🎯 Prévisions - ajout à la fin
   // ----------------------------
 
   const formPrevision = document.getElementById("formPrevision");
@@ -285,3 +284,4 @@ setTimeout(() => {
 
   updatePrevisionUI();
 });
+
