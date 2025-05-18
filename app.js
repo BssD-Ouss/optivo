@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // --- Variables et éléments HTML ---
   const form = document.getElementById("interventionForm");
   const getonInput = document.getElementById("geton");
   const typeInput = document.getElementById("type");
@@ -10,12 +11,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const historiqueTableBody = document.querySelector("#historique tbody");
   const totalElement = document.getElementById("total");
 
+  const previsionForm = document.getElementById("previsionForm");
+  const previsionInput = document.getElementById("prevision-geton");
+  const previsionList = document.getElementById("prevision-list");
+  const checkPrevisionsBtn = document.getElementById("checkPrevisions");
+  const previsionStatus = document.getElementById("prevision-status");
+
+  // --- Données locales ---
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
+  let previsions = JSON.parse(localStorage.getItem("previsions") || "[]");
 
   function removeAccents(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
+  // --- Mise à jour de l'historique ---
   function updateHistorique() {
     historiqueTableBody.innerHTML = "";
     let total = 0;
@@ -24,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const tr = document.createElement("tr");
 
       const tdDel = document.createElement("td");
-      tdDel.setAttribute("data-label", "Supprimer");
       const btnDel = document.createElement("button");
       btnDel.textContent = "🗑️";
       btnDel.title = "Supprimer cette intervention";
@@ -39,112 +48,61 @@ document.addEventListener("DOMContentLoaded", () => {
       tdDel.appendChild(btnDel);
       tr.appendChild(tdDel);
 
-      const tdDate = document.createElement("td");
-      tdDate.setAttribute("data-label", "Date");
       const dateObj = new Date(item.date);
-      tdDate.textContent = dateObj.toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-      tr.appendChild(tdDate);
-
-      const tdGeton = document.createElement("td");
-      tdGeton.setAttribute("data-label", "Geton");
-      tdGeton.textContent = item.geton;
-      tr.appendChild(tdGeton);
-
-      const tdType = document.createElement("td");
-      tdType.setAttribute("data-label", "Type");
-      tdType.textContent = item.type.toUpperCase();
-      tr.appendChild(tdType);
-
-      const tdSousType = document.createElement("td");
-      tdSousType.setAttribute("data-label", "Sous-type");
-      tdSousType.textContent = item.sousType;
-      tr.appendChild(tdSousType);
-
-      const tdResultat = document.createElement("td");
-      tdResultat.setAttribute("data-label", "Résultat");
-      tdResultat.textContent = item.resultat.toUpperCase();
-      tr.appendChild(tdResultat);
-
-      const tdEtatBox = document.createElement("td");
-      tdEtatBox.setAttribute("data-label", "État Box");
-
-      if (item.resultat === "success") {
-        const boxStateRaw = item.etatBox.trim();
-        const boxState = removeAccents(boxStateRaw.toLowerCase());
-
-        tdEtatBox.textContent = boxStateRaw.toUpperCase();
-
-        if (boxState === "ok") {
-          tdEtatBox.classList.add("etat-ok");
-        } else if (boxState === "etape 9" || boxState === "etape9") {
-          tdEtatBox.classList.add("etat-etape9");
-        } else {
-          tdEtatBox.classList.add("etat-nok");
-        }
-      } else {
-        tdEtatBox.textContent = "NOK";
-        tdEtatBox.classList.add("etat-nok");
-      }
-
-      tr.appendChild(tdEtatBox);
-
-      const tdMotif = document.createElement("td");
-      tdMotif.setAttribute("data-label", "Motif");
-      tdMotif.textContent = item.resultat === "echec" ? (item.motif || "--") : "--";
-      tr.appendChild(tdMotif);
-
+      tr.innerHTML += `
+        <td>${dateObj.toLocaleDateString("fr-FR", {
+          day: "2-digit", month: "2-digit", year: "numeric",
+          hour: "2-digit", minute: "2-digit"
+        })}</td>
+        <td>${item.geton}</td>
+        <td>${item.type.toUpperCase()}</td>
+        <td>${item.sousType}</td>
+        <td>${item.resultat.toUpperCase()}</td>
+        <td class="${item.resultat === 'success' && item.etatBox.toLowerCase().includes("9") ? 'etat-etape9' : 'etat-ok'}">${item.resultat === 'success' ? item.etatBox.toUpperCase() : 'NOK'}</td>
+        <td>${item.resultat === 'echec' ? (item.motif || "--") : "--"}</td>
+      `;
       historiqueTableBody.appendChild(tr);
 
+      // Calcul du total
       if (item.resultat === "success") {
         if (item.type === "installation") {
-          if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
-          else total += 45;
+          total += ["aerienne", "aerosouterrain"].includes(item.sousType) ? 50 : 45;
         } else if (item.type === "plp") total += 20;
         else if (item.type === "sav") total += 15;
       }
     });
 
-    //totalElement.textContent = `${total}€`;
-	// Statistiques
-const totalCount = interventions.length;
-const successCount = interventions.filter(i => i.resultat === "success").length;
-const echecCount = interventions.filter(i => i.resultat === "echec").length;
+    // Statistiques
+    const totalCount = interventions.length;
+    const successCount = interventions.filter(i => i.resultat === "success").length;
+    const echecCount = interventions.filter(i => i.resultat === "echec").length;
+    const successRate = totalCount ? ((successCount / totalCount) * 100).toFixed(1) : 0;
+    const echecRate = totalCount ? ((echecCount / totalCount) * 100).toFixed(1) : 0;
 
-const successRate = totalCount > 0 ? ((successCount / totalCount) * 100).toFixed(1) : 0;
-const echecRate = totalCount > 0 ? ((echecCount / totalCount) * 100).toFixed(1) : 0;
-
-// Mise à jour du dashboard
-document.getElementById("stat-total").textContent = totalCount;
-document.getElementById("stat-success-count").textContent = successCount;
-document.getElementById("stat-success-rate").textContent = `${successRate}%`;
-document.getElementById("stat-echec-count").textContent = echecCount;
-document.getElementById("stat-echec-rate").textContent = `${echecRate}%`;
-document.getElementById("stat-total-gain").textContent = `${total}€`;
+    document.getElementById("stat-total").textContent = totalCount;
+    document.getElementById("stat-success-count").textContent = successCount;
+    document.getElementById("stat-success-rate").textContent = `${successRate}%`;
+    document.getElementById("stat-echec-count").textContent = echecCount;
+    document.getElementById("stat-echec-rate").textContent = `${echecRate}%`;
+    document.getElementById("total").textContent = `${total}€`;
   }
 
   function isGetonUnique(geton) {
     return !interventions.some(item => item.geton === geton);
   }
 
-  // Gère affichage dynamique au changement de sélection
+  // --- Affichage dynamique : succès/échec ---
   function handleResultatDisplay(value) {
     etatBoxContainer.style.display = value === "success" ? "block" : "none";
     motifInput.style.display = value === "echec" ? "block" : "none";
   }
 
-  // Initialiser l'affichage selon la valeur par défaut
   handleResultatDisplay(resultatInput.value);
-
   resultatInput.addEventListener("change", () => {
     handleResultatDisplay(resultatInput.value);
   });
 
+  // --- Soumission d'intervention ---
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const geton = getonInput.value.trim();
@@ -174,11 +132,77 @@ document.getElementById("stat-total-gain").textContent = `${total}€`;
     updateHistorique();
     form.reset();
 
-    // Remettre l'affichage correct selon la valeur actuelle de resultat
-setTimeout(() => {
-  handleResultatDisplay(resultatInput.value);
-}, 0);
+    setTimeout(() => handleResultatDisplay(resultatInput.value), 0);
   });
 
+  // --- Prévisions pour demain ---
+  function updatePrevisionList() {
+    previsionList.innerHTML = "";
+    previsions.forEach((geton, idx) => {
+      const li = document.createElement("li");
+      li.textContent = geton;
+      const btn = document.createElement("button");
+      btn.textContent = "❌";
+      btn.style.marginLeft = "10px";
+      btn.onclick = () => {
+        previsions.splice(idx, 1);
+        localStorage.setItem("previsions", JSON.stringify(previsions));
+        updatePrevisionList();
+      };
+      li.appendChild(btn);
+      previsionList.appendChild(li);
+    });
+  }
+
+  previsionForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const geton = previsionInput.value.trim();
+    if (geton && !previsions.includes(geton)) {
+      previsions.push(geton);
+      localStorage.setItem("previsions", JSON.stringify(previsions));
+      updatePrevisionList();
+      previsionInput.value = "";
+    }
+  });
+
+  // --- Vérification manuelle des prévisions ---
+  function checkPrevisions() {
+    const getonsAjoutes = interventions.map(i => i.geton);
+    const manquants = previsions.filter(p => !getonsAjoutes.includes(p));
+
+    if (manquants.length === 0 && previsions.length > 0) {
+      previsionStatus.textContent = "✅ Toutes les prévisions ont été ajoutées.";
+      previsions = [];
+      localStorage.removeItem("previsions");
+      updatePrevisionList();
+    } else if (manquants.length > 0) {
+      previsionStatus.textContent = `⚠️ ${manquants.length} intervention(s) prévue(s) non encore saisie(s) !`;
+    } else {
+      previsionStatus.textContent = "ℹ️ Aucune prévision enregistrée.";
+    }
+  }
+
+  checkPrevisionsBtn.addEventListener("click", checkPrevisions);
+
+  // --- Notification automatique à midi ---
+  function verifierAutoPrevisions() {
+    const now = new Date();
+    const heure = now.getHours();
+    const minute = now.getMinutes();
+
+    if (heure === 12 && minute < 10) {
+      const getonsAjoutes = interventions.map(i => i.geton);
+      const manquants = previsions.filter(p => !getonsAjoutes.includes(p));
+      if (manquants.length > 0) {
+        alert(`⚠️ Il vous reste ${manquants.length} intervention(s) prévue(s) non saisie(s) ! Pensez à les ajouter.`);
+      }
+    }
+  }
+
+  // Vérifie à chaque chargement de page
+  verifierAutoPrevisions();
+
+  // Lancement initial
   updateHistorique();
+  updatePrevisionList();
 });
