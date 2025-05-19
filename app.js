@@ -201,20 +201,34 @@ function updatePrevisionsUI() {
 
   previsions.forEach((geton, index) => {
     const li = document.createElement("li");
-    li.textContent = geton;
-    const del = document.createElement("button");
-    del.textContent = "❌";
-    del.addEventListener("click", () => {
-      previsions.splice(index, 1);
-      localStorage.setItem("previsions", JSON.stringify(previsions));
-      updatePrevisionsUI();
-    });
-    li.appendChild(del);
+    li.textContent = geton + " ";
+
+    const existe = interventions.some(i => i.geton === geton);
+    const actionBtn = document.createElement("button");
+
+    if (existe) {
+      actionBtn.textContent = "✅";
+      actionBtn.disabled = true;
+      actionBtn.style.cursor = "default";
+      actionBtn.title = "Déjà saisi";
+      li.style.color = "green";
+    } else {
+      actionBtn.textContent = "❌";
+      actionBtn.title = "Supprimer cette prévision";
+      actionBtn.addEventListener("click", () => {
+        previsions.splice(index, 1);
+        localStorage.setItem("previsions", JSON.stringify(previsions));
+        updatePrevisionsUI();
+      });
+    }
+
+    li.appendChild(actionBtn);
     listePrevisions.appendChild(li);
   });
 
   btnComparer.style.display = "inline-block";
 }
+
 
 // Ajout d'une prévision
 previsionForm.addEventListener("submit", (e) => {
