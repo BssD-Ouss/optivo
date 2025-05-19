@@ -264,7 +264,7 @@ function verifierEtNotifier() {
   const heure = now.getHours();
   const minute = now.getMinutes();
 
-  if (heure === 12 && minute === 0 && previsions.length > 0) {
+  if (heure === 14 && minute === 15 && previsions.length > 0) {
     const nonSaisis = previsions.filter(p =>
       !interventions.some(i => i.geton === p)
     );
@@ -280,7 +280,7 @@ function verifierEtNotifier() {
 }
 
 // Lancer un minuteur toutes les 60 secondes pour checker midi
-setInterval(verifierEtNotifier, 60000);
+setInterval(verifierEtNotifier, 30000);
 
 // Demander la permission de notification
 if ("Notification" in window && Notification.permission !== "granted") {
