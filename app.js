@@ -182,4 +182,99 @@ setTimeout(() => {
 
   updateHistorique();
   
+  // =============== GESTION DES PREVISIONS DU LENDEMAIN =============== //
+const previsionForm = document.getElementById("previsionForm");
+const previsionGetonInput = document.getElementById("previsionGeton");
+const listePrevisions = document.getElementById("listePrevisions");
+const btnComparer = document.getElementById("btnComparer");
+
+// Chargement des prévisions depuis localStorage
+let previsions = JSON.parse(localStorage.getItem("previsions") || "[]");
+
+// Fonction d'affichage des prévisions
+function updatePrevisionsUI() {
+  listePrevisions.innerHTML = "";
+  if (previsions.length === 0) {
+    btnComparer.style.display = "none";
+    return;
+  }
+
+  previsions.forEach((geton, index) => {
+    const li = document.createElement("li");
+    li.textContent = geton;
+    const del = document.createElement("button");
+    del.textContent = "❌";
+    del.addEventListener("click", () => {
+      previsions.splice(index, 1);
+      localStorage.setItem("previsions", JSON.stringify(previsions));
+      updatePrevisionsUI();
+    });
+    li.appendChild(del);
+    listePrevisions.appendChild(li);
+  });
+
+  btnComparer.style.display = "inline-block";
+}
+
+// Ajout d'une prévision
+previsionForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const geton = previsionGetonInput.value.trim();
+  if (geton && !previsions.includes(geton)) {
+    previsions.push(geton);
+    localStorage.setItem("previsions", JSON.stringify(previsions));
+    updatePrevisionsUI();
+    previsionForm.reset();
+  }
+});
+
+// Comparaison avec les interventions saisies
+btnComparer.addEventListener("click", () => {
+  const nonSaisis = previsions.filter(p =>
+    !interventions.some(i => i.geton === p)
+  );
+
+  if (nonSaisis.length === 0) {
+    alert("✅ Toutes les interventions prévues ont été saisies !");
+    previsions = [];
+    localStorage.removeItem("previsions");
+    updatePrevisionsUI();
+  } else {
+    alert("⚠️ Il reste des interventions non saisies :\n" + nonSaisis.join(", "));
+  }
+});
+
+// Vérification automatique à midi
+function verifierEtNotifier() {
+  const now = new Date();
+  const heure = now.getHours();
+  const minute = now.getMinutes();
+
+  if (heure === 12 && minute === 0 && previsions.length > 0) {
+    const nonSaisis = previsions.filter(p =>
+      !interventions.some(i => i.geton === p)
+    );
+
+    if (nonSaisis.length > 0) {
+      if (Notification.permission === "granted") {
+        new Notification("⚠️ Saisie incomplète", {
+          body: `Il reste ${nonSaisis.length} intervention(s) non saisie(s) !`,
+        });
+      }
+    }
+  }
+}
+
+// Lancer un minuteur toutes les 60 secondes pour checker midi
+setInterval(verifierEtNotifier, 60000);
+
+// Demander la permission de notification
+if ("Notification" in window && Notification.permission !== "granted") {
+  Notification.requestPermission();
+}
+
+// Mise à jour initiale
+updatePrevisionsUI();
+
+  
 });
