@@ -290,33 +290,5 @@ if ("Notification" in window && Notification.permission !== "granted") {
 // Mise à jour initiale
 updatePrevisionsUI();
 
-//gettoken firebase
-import { messaging, getToken, onMessage } from "./firebase-config.js";
-
-navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
-  console.log("✅ Service Worker FCM enregistré");
-
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
-      const vapidKey = "BLH6gqWFonXd9MsAAiEcuRZhGaNuQrlBNYKNpROPZrInIMCBEBumMYftZH38AppklKriIFYRsvzYDDnmxJOWvBI";
-
-      getToken(messaging, { vapidKey, serviceWorkerRegistration: registration }).then(currentToken => {
-        if (currentToken) {
-          console.log("🔐 Token FCM : ", currentToken);
-          // 👉 Sauvegarde possible dans localStorage ou en base
-        } else {
-          console.warn("⚠️ Aucun token disponible.");
-        }
-      });
-    }
-  });
-
-  // Quand notification reçue avec l'app ouverte
-  onMessage(messaging, payload => {
-    const { title, body } = payload.notification;
-    new Notification(title, { body });
-  });
-});
-
   
 });
