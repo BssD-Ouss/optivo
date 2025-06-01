@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
 const gainElement = document.getElementById("stat-total-gain");
 const toggleBtn = document.getElementById("toggleGainVisibility");
 let isGainVisible = true;
+const storedVisibility = localStorage.getItem("gainVisible");
+if (storedVisibility !== null) {
+  isGainVisible = storedVisibility === "true"; // ⚠️ localStorage retourne tout en string
+}
 let lastGainValue = "0€";
 
   function removeAccents(str) {
@@ -143,6 +147,10 @@ document.getElementById("stat-echec-rate").textContent = `${echecRate}%`;
 lastGainValue = `${total}€`;
 if (isGainVisible) {
   gainElement.textContent = lastGainValue;
+  toggleBtn.textContent = "👁️";
+} else {
+  gainElement.textContent = "••••";
+  toggleBtn.textContent = "🙈";
 }
   }
 
@@ -208,11 +216,12 @@ setTimeout(() => {
   //oeil gains
 toggleBtn.addEventListener("click", () => {
   isGainVisible = !isGainVisible;
+  localStorage.setItem("gainVisible", isGainVisible); // 🔐 Sauvegarde
+
   if (isGainVisible) {
     gainElement.textContent = lastGainValue;
     toggleBtn.textContent = "👁️";
   } else {
-    lastGainValue = gainElement.textContent;
     gainElement.textContent = "••••";
     toggleBtn.textContent = "🙈";
   }
