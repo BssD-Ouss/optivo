@@ -75,7 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
       tdEtatBox.setAttribute("data-label", "État Box");
 
     if (item.resultat === "success") {
-		tdEtatBox.textContent = item.etatBox;
+  tdEtatBox.textContent = item.etatBox.toUpperCase();  // ✅ MAJUSCULE
+  tdEtatBox.classList.add("etat-ok"); // ✅ CLASSE CSS POUR LA COULEUR (à définir d
   const boxState = removeAccents(item.etatBox.trim().toLowerCase());
   const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
 
