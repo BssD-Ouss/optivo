@@ -284,6 +284,6 @@ if ("Notification" in window && Notification.permission !== "granted") {
 
 // Mise à jour initiale
 updatePrevisionsUI();
-!
+
   
 });
