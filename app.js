@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const etatBoxContainer = document.getElementById("etatBoxContainer");
   const historiqueTableBody = document.querySelector("#historique tbody");
   const totalElement = document.getElementById("total");
+  const heureInterventionInput = document.getElementById("heureIntervention");
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
 
@@ -102,7 +103,10 @@ document.addEventListener("DOMContentLoaded", () => {
       tdMotif.setAttribute("data-label", "Motif");
       tdMotif.textContent = item.resultat === "echec" ? (item.motif || "--") : "--";
       tr.appendChild(tdMotif);
-
+const tdHeure = document.createElement("td");
+tdHeure.setAttribute("data-label", "Heure prévue");
+tdHeure.textContent = item.heureIntervention || "--";
+tr.appendChild(tdHeure);
       historiqueTableBody.appendChild(tr);
 
     });
@@ -144,6 +148,7 @@ document.getElementById("stat-total-gain").textContent = `${total}€`;
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+	const heureIntervention = heureInterventionInput.value;
     const geton = getonInput.value.trim();
     const type = typeInput.value;
     const sousType = sousTypeInput.value;
@@ -160,6 +165,7 @@ document.getElementById("stat-total-gain").textContent = `${total}€`;
       geton,
       type,
       sousType,
+	  heureIntervention,
       resultat,
       etatBox: resultat === "success" ? etatBox : "",
       motif: resultat === "echec" ? motif : "",
