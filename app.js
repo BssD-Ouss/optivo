@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const historiqueTableBody = document.querySelector("#historique tbody");
   const totalElement = document.getElementById("total");
   const heureInterventionInput = document.getElementById("heureIntervention");
+  const noteInput = document.getElementById("note");
+
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
 
@@ -109,6 +111,10 @@ tr.appendChild(tdHeure);
       tdMotif.setAttribute("data-label", "Motif");
       tdMotif.textContent = item.resultat === "echec" ? (item.motif || "--") : "--";
       tr.appendChild(tdMotif);
+	  const tdNote = document.createElement("td");
+tdNote.setAttribute("data-label", "Note");
+tdNote.textContent = item.note || "--";
+tr.appendChild(tdNote);
       historiqueTableBody.appendChild(tr);
 
     });
@@ -157,6 +163,8 @@ document.getElementById("stat-total-gain").textContent = `${total}€`;
     const resultat = resultatInput.value;
     const etatBox = etatBoxInput.value;
     const motif = motifInput.value.trim();
+	const note = noteInput.value.trim();
+
 
     if (!isGetonUnique(geton)) {
       alert("Ce geton existe déjà !");
@@ -167,6 +175,7 @@ document.getElementById("stat-total-gain").textContent = `${total}€`;
       geton,
       type,
       sousType,
+	  note,
 	  heureIntervention,
       resultat,
       etatBox: resultat === "success" ? etatBox : "",
