@@ -14,6 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
+  
+// Variables pour affichage du total des gains
+const gainElement = document.getElementById("stat-total-gain");
+const toggleBtn = document.getElementById("toggleGainVisibility");
+let isGainVisible = true;
+let lastGainValue = "0€";
 
   function removeAccents(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -200,12 +206,6 @@ setTimeout(() => {
   updateHistorique();
   
   //oeil gains
-  const gainElement = document.getElementById("stat-total-gain");
-const toggleBtn = document.getElementById("toggleGainVisibility");
-
-let isGainVisible = true;
-let lastGainValue = ""; // Pour garder le vrai montant
-
 toggleBtn.addEventListener("click", () => {
   isGainVisible = !isGainVisible;
   if (isGainVisible) {
