@@ -141,8 +141,8 @@ button {
     text-align: left;
   }
  td[data-label="Heure prévue"] {
-    background-color: red;
-    color: white;
+    background-color: red !important;
+  color: white !important;
     font-weight: bold;
     border-radius: 6px;
   }
