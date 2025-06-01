@@ -101,13 +101,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       historiqueTableBody.appendChild(tr);
 
-      if (item.resultat === "success") {
-        if (item.type === "installation") {
-          if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
-          else total += 45;
-        } else if (item.type === "plp") total += 20;
-        else if (item.type === "sav") total += 15;
-      }
+if (item.resultat === "success") {
+  const boxState = removeAccents(item.etatBox.trim().toLowerCase());
+  const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
+
+  if (item.sousType === "standard" && isBoxValide) {
+    if (item.type === "installation") total += 25;
+    else if (item.type === "plp") total += 20;
+    else if (item.type === "sav") total += 15;
+  } else {
+    if (item.type === "installation") {
+      if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
+      else total += 45;
+    } else if (item.type === "plp") total += 20;
+    else if (item.type === "sav") total += 15;
+  }
+}
+
     });
 
     //totalElement.textContent = `${total}€`;
@@ -289,6 +299,6 @@ if ("Notification" in window && Notification.permission !== "granted") {
 
 // Mise à jour initiale
 updatePrevisionsUI();
-
+!
   
 });
