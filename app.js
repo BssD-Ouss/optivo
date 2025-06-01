@@ -51,6 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
         minute: "2-digit"
       });
       tr.appendChild(tdDate);
+	  
+	  
+const tdHeure = document.createElement("td");
+tdHeure.setAttribute("data-label", "Heure prévue");
+tdHeure.textContent = item.heureIntervention || "--";
+tr.appendChild(tdHeure);
 
       const tdGeton = document.createElement("td");
       tdGeton.setAttribute("data-label", "Geton");
@@ -103,10 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
       tdMotif.setAttribute("data-label", "Motif");
       tdMotif.textContent = item.resultat === "echec" ? (item.motif || "--") : "--";
       tr.appendChild(tdMotif);
-const tdHeure = document.createElement("td");
-tdHeure.setAttribute("data-label", "Heure prévue");
-tdHeure.textContent = item.heureIntervention || "--";
-tr.appendChild(tdHeure);
       historiqueTableBody.appendChild(tr);
 
     });
