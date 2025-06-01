@@ -51,6 +51,11 @@ let lastGainValue = "0€";
       });
       tdDel.appendChild(btnDel);
       tr.appendChild(tdDel);
+	  
+	  const tdHeure = document.createElement("td");
+tdHeure.setAttribute("data-label", "Heure prévue");
+tdHeure.textContent = item.heureIntervention || "--";
+tr.appendChild(tdHeure);
 
       const tdDate = document.createElement("td");
       tdDate.setAttribute("data-label", "Date");
@@ -64,11 +69,6 @@ let lastGainValue = "0€";
       });
       tr.appendChild(tdDate);
 	  
-	  
-const tdHeure = document.createElement("td");
-tdHeure.setAttribute("data-label", "Heure prévue");
-tdHeure.textContent = item.heureIntervention || "--";
-tr.appendChild(tdHeure);
 
       const tdGeton = document.createElement("td");
       tdGeton.setAttribute("data-label", "Geton");
