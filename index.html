@@ -6,6 +6,10 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <title>Optivo</title>
+  <!-- Firebase SDK core -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+
 </head>
 <body>
   <h1>Optivo - Mon Bilan Fibre</h1>
@@ -56,6 +60,7 @@
       <option value="facade">Façade</option>
       <option value="souterrain">Sous-terrain</option>
       <option value="aerosouterrain">Aéro-souterrain</option>
+	  <option value="standard">Standard (Immeuble)</option>
     </select>
     <select id="resultat">
       <option value="success">Effectué avec succès</option>
