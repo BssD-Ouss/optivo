@@ -105,7 +105,7 @@ if (item.resultat === "success") {
   const boxState = removeAccents(item.etatBox.trim().toLowerCase());
   const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
 
-  if (item.sousType === "standard" && isBoxValide) {
+  if (item.sousType === "Standard (Immeuble)" && isBoxValide) {
     if (item.type === "installation") total += 25;
     else if (item.type === "plp") total += 20;
     else if (item.type === "sav") total += 15;
