@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tdEtatBox.setAttribute("data-label", "État Box");
 
     if (item.resultat === "success") {
+		tdEtatBox.textContent = item.etatBox;
   const boxState = removeAccents(item.etatBox.trim().toLowerCase());
   const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
 
