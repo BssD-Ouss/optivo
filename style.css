@@ -217,3 +217,8 @@ button {
   color: white;
   font-weight: bold;
 }
+th.heure-prevue {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
