@@ -140,6 +140,16 @@ button {
   .total {
     text-align: left;
   }
+  .heure-prevue {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+th.heure-prevue {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
 }
 /* Badges pour types */
 .badge {
