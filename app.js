@@ -74,20 +74,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const tdEtatBox = document.createElement("td");
       tdEtatBox.setAttribute("data-label", "État Box");
 
-      if (item.resultat === "success") {
-        const boxStateRaw = item.etatBox.trim();
-        const boxState = removeAccents(boxStateRaw.toLowerCase());
+    if (item.resultat === "success") {
+  const boxState = removeAccents(item.etatBox.trim().toLowerCase());
+  const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
 
-        tdEtatBox.textContent = boxStateRaw.toUpperCase();
-
-        if (boxState === "ok") {
-          tdEtatBox.classList.add("etat-ok");
-        } else if (boxState === "etape 9" || boxState === "etape9") {
-          tdEtatBox.classList.add("etat-etape9");
-        } else {
-          tdEtatBox.classList.add("etat-nok");
-        }
-      } else {
+  if (item.sousType === "Standard (Immeuble)" && isBoxValide) {
+    if (item.type === "installation") total += 25;
+    else if (item.type === "plp") total += 20;
+    else if (item.type === "sav") total += 15;
+  } else {
+    if (item.type === "installation") {
+      if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
+      else total += 45;
+    } else if (item.type === "plp") total += 20;
+    else if (item.type === "sav") total += 15;
+  }
+} else {
         tdEtatBox.textContent = "NOK";
         tdEtatBox.classList.add("etat-nok");
       }
@@ -101,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       historiqueTableBody.appendChild(tr);
 
-if (item.resultat === "success") {
+    if (item.resultat === "success") {
   const boxState = removeAccents(item.etatBox.trim().toLowerCase());
   const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
 
@@ -117,7 +119,6 @@ if (item.resultat === "success") {
     else if (item.type === "sav") total += 15;
   }
 }
-
     });
 
     //totalElement.textContent = `${total}€`;
