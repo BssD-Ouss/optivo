@@ -140,16 +140,17 @@ button {
   .total {
     text-align: left;
   }
-  .heure-prevue {
-  background-color: red;
-  color: white;
-  font-weight: bold;
-}
-th.heure-prevue {
-  background-color: red;
-  color: white;
-  font-weight: bold;
-}
+ td[data-label="Heure prévue"] {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+  }
+
+  td[data-label="Heure prévue"]::before {
+    color: white;
+    font-weight: bold;
+  }
 }
 /* Badges pour types */
 .badge {
