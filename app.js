@@ -134,7 +134,10 @@ document.getElementById("stat-success-count").textContent = successCount;
 document.getElementById("stat-success-rate").textContent = `${successRate}%`;
 document.getElementById("stat-echec-count").textContent = echecCount;
 document.getElementById("stat-echec-rate").textContent = `${echecRate}%`;
-document.getElementById("stat-total-gain").textContent = `${total}€`;
+lastGainValue = `${total}€`;
+if (isGainVisible) {
+  gainElement.textContent = lastGainValue;
+}
   }
 
   function isGetonUnique(geton) {
@@ -195,6 +198,26 @@ setTimeout(() => {
   });
 
   updateHistorique();
+  
+  //oeil gains
+  const gainElement = document.getElementById("stat-total-gain");
+const toggleBtn = document.getElementById("toggleGainVisibility");
+
+let isGainVisible = true;
+let lastGainValue = ""; // Pour garder le vrai montant
+
+toggleBtn.addEventListener("click", () => {
+  isGainVisible = !isGainVisible;
+  if (isGainVisible) {
+    gainElement.textContent = lastGainValue;
+    toggleBtn.textContent = "👁️";
+  } else {
+    lastGainValue = gainElement.textContent;
+    gainElement.textContent = "••••";
+    toggleBtn.textContent = "🙈";
+  }
+});
+
   
   // =============== GESTION DES PREVISIONS DU LENDEMAIN =============== //
 const previsionForm = document.getElementById("previsionForm");
