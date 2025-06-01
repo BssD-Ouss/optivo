@@ -212,3 +212,8 @@ button {
   border-left: 4px solid #ffc107;
   color: #e69500;
 }
+.heure-prevue {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}

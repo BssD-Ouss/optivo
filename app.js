@@ -52,9 +52,10 @@ let lastGainValue = "0€";
       tdDel.appendChild(btnDel);
       tr.appendChild(tdDel);
 	  
-	  const tdHeure = document.createElement("td");
+	const tdHeure = document.createElement("td");
 tdHeure.setAttribute("data-label", "Heure prévue");
 tdHeure.textContent = item.heureIntervention || "--";
+tdHeure.classList.add("heure-prevue"); // ✅ Applique la classe
 tr.appendChild(tdHeure);
 
       const tdDate = document.createElement("td");
