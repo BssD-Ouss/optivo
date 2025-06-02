@@ -240,6 +240,8 @@ toggleBtn.addEventListener("click", () => {
   // =============== GESTION DES PREVISIONS DU LENDEMAIN =============== //
 const previsionForm = document.getElementById("previsionForm");
 const previsionGetonInput = document.getElementById("previsionGeton");
+const previsionGrilleInput = document.getElementById("previsionGrille");
+const previsionHeureInput = document.getElementById("previsionHeure");
 const listePrevisions = document.getElementById("listePrevisions");
 const btnComparer = document.getElementById("btnComparer");
 
@@ -254,11 +256,10 @@ function updatePrevisionsUI() {
     return;
   }
 
-  previsions.forEach((geton, index) => {
+  previsions.forEach((previsions, index) => {
     const li = document.createElement("li");
-    li.textContent = geton + " ";
-
-    const existe = interventions.some(i => i.geton === geton);
+	li.textContent = `${prevision.geton} (Grille: ${prevision.grille}, Heure: ${prevision.heure}) `;
+    const existe = interventions.some(i => i.geton === prevision.geton);
     const actionBtn = document.createElement("button");
 
     if (existe) {
@@ -288,9 +289,11 @@ function updatePrevisionsUI() {
 // Ajout d'une prévision
 previsionForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const geton = previsionGetonInput.value.trim();
-  if (geton && !previsions.includes(geton)) {
-    previsions.push(geton);
+ const geton = previsionGetonInput.value.trim();
+ const grille = previsionGrilleInput.value.trim();
+ const heure = previsionHeureInput.value;
+if (geton && !previsions.some(p => p.geton === geton)) {
+  previsions.push({ geton, grille, heure });
     localStorage.setItem("previsions", JSON.stringify(previsions));
     updatePrevisionsUI();
     previsionForm.reset();
