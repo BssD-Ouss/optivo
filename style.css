@@ -239,7 +239,7 @@ th.heure-prevue {
 
 .btn-wrapper {
   text-align: center;
-  margin: 10px 0 10px 0; /* top right bottom left */
+  margin: 10px 0 20px 0; /* top right bottom left */
 }
 
 .btn-comparer {
@@ -247,7 +247,7 @@ th.heure-prevue {
   padding: 12px 24px;
   font-size: 1rem;
   font-weight: bold;
-  background-color: #ff6600;
+  background-color: #D3D3D3;
   color: white;
   border: none;
   border-radius: 8px;
