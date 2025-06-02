@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const motifInput = document.getElementById("motif");
   const etatBoxContainer = document.getElementById("etatBoxContainer");
   const historiqueTableBody = document.querySelector("#historique tbody");
-  const totalElement = document.getElementById("total");
   const heureInterventionInput = document.getElementById("heureIntervention");
   const noteInput = document.getElementById("note");
 

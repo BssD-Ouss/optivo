@@ -18,7 +18,11 @@ body {
 }
 
 /* Titres */
-h1, h2 {
+  h1 {
+  color: #000000; /* couleur Free Mobile */
+  margin-bottom: 20px;
+}
+   h2 {
   color: #e80000; /* couleur Free Mobile */
   margin-bottom: 10px;
 }
