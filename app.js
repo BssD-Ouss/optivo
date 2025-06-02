@@ -305,8 +305,6 @@ btnComparer.addEventListener("click", () => {
 	const nonSaisis = previsions.filter(p =>
   !interventions.some(i => i.geton === p.geton)
 );
-  );
-
   if (nonSaisis.length === 0) {
     alert("✅ Toutes les interventions prévues ont été saisies !");
     previsions = [];
@@ -325,7 +323,7 @@ function verifierEtNotifier() {
 
   if (heure === 14 && minute === 15 && previsions.length > 0) {
     const nonSaisis = previsions.filter(p =>
-      !interventions.some(i => i.geton === p)
+      !interventions.some(i => i.geton === p.geton)
     );
 
     if (nonSaisis.length > 0) {
