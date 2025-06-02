@@ -311,7 +311,13 @@ btnComparer.addEventListener("click", () => {
     localStorage.removeItem("previsions");
     updatePrevisionsUI();
   } else {
-    alert("⚠️ Il reste des interventions non saisies :\n" + nonSaisis.join(", "));
+  const details = nonSaisis.map(p => {
+  return `➡️ ${p.geton} | Grille: ${p.grille || "--"} | Heure: ${p.heure || "--"}`;
+}).join("\n");
+
+alert("⚠️ Il reste des interventions non saisies :\n\n" + details);
+
+  
   }
 });
 
