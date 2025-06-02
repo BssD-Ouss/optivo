@@ -256,7 +256,7 @@ function updatePrevisionsUI() {
     return;
   }
 
-  previsions.forEach((previsions, index) => {
+  previsions.forEach((prevision, index) => {
     const li = document.createElement("li");
 	li.textContent = `${prevision.geton} (Grille: ${prevision.grille}, Heure: ${prevision.heure}) `;
     const existe = interventions.some(i => i.geton === prevision.geton);
@@ -302,8 +302,9 @@ if (geton && !previsions.some(p => p.geton === geton)) {
 
 // Comparaison avec les interventions saisies
 btnComparer.addEventListener("click", () => {
-  const nonSaisis = previsions.filter(p =>
-    !interventions.some(i => i.geton === p)
+	const nonSaisis = previsions.filter(p =>
+  !interventions.some(i => i.geton === p.geton)
+);
   );
 
   if (nonSaisis.length === 0) {
