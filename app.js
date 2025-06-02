@@ -212,6 +212,7 @@ if (isGainVisible) {
     interventions.push(newEntry);
     localStorage.setItem("interventions", JSON.stringify(interventions));
     updateHistorique();
+	updatePrevisionsUI();
     form.reset();
 
     // Remettre l'affichage correct selon la valeur actuelle de resultat
