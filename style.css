@@ -4,7 +4,7 @@ body {
   background-color: #f2f2f2;
   color: #333;
   margin: 0;
-  padding: 30px;
+  padding: 20px;
 }
 
 /* Conteneur principal */
@@ -20,7 +20,7 @@ body {
 /* Titres */
   h1 {
   color: #000000; /* couleur Free Mobile */
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
    h2 {
   color: #e80000; /* couleur Free Mobile */
