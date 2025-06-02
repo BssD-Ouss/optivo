@@ -83,7 +83,7 @@ tr.appendChild(tdHeure);
 
       const tdType = document.createElement("td");
       tdType.setAttribute("data-label", "Type");
-      tdType.textContent = item.type.toUpperCase();
+      tdType.textContent = item.type === "brassage" ? "BRASSAGE AU PM" : item.type.toUpperCase();
       tr.appendChild(tdType);
 
       const tdSousType = document.createElement("td");
