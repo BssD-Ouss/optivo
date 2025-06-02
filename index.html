@@ -55,6 +55,10 @@
   
   <form id="interventionForm">
     <input type="text" id="geton" placeholder="Geton (identifiant unique)" required />
+	<div class="form-group">
+  <label for="grille">Grille :</label>
+  <input type="text" id="grille" name="grille" placeholder="Nom de la grille" required>
+</div>
 	<label for="heureIntervention">Heure prévue :</label>
 <select id="heureIntervention" required>
   <option value="">-- Choisir une heure --</option>
@@ -109,6 +113,7 @@
 	  <th class="heure-prevue">Heure prévue</th>
 	  <th>Date</th>
       <th>Geton</th>
+	  <th>Grille</th>
 	  <th>Type</th>
       <th>Sous-type</th>
       <th>Résultat</th>

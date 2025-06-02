@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("interventionForm");
-  const getonInput = document.getElementById("geton");
+  const getonInput = document.getElementById("geton")
+ const grilleInput = document.getElementById("grille");
   const typeInput = document.getElementById("type");
   const sousTypeInput = document.getElementById("sousType");
   const resultatInput = document.getElementById("resultat");
@@ -75,6 +76,11 @@ tr.appendChild(tdHeure);
       tdGeton.setAttribute("data-label", "Geton");
       tdGeton.textContent = item.geton;
       tr.appendChild(tdGeton);
+	  
+	  const tdGrille = document.createElement("td");
+      tdGrille.setAttribute("data-label", "Grille");
+      tdGrille.textContent = item.grille || "--";
+      tr.appendChild(tdGrille);
 
       const tdType = document.createElement("td");
       tdType.setAttribute("data-label", "Type");
@@ -182,6 +188,7 @@ if (isGainVisible) {
     const etatBox = etatBoxInput.value;
     const motif = motifInput.value.trim();
 	const note = noteInput.value.trim();
+    const grille = grilleInput.value.trim();
 
 
     if (!isGetonUnique(geton)) {
@@ -198,6 +205,7 @@ if (isGainVisible) {
       resultat,
       etatBox: resultat === "success" ? etatBox : "",
       motif: resultat === "echec" ? motif : "",
+	  grille,
       date: new Date().toISOString()
     };
 
