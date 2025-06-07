@@ -83,8 +83,14 @@ tr.appendChild(tdHeure);
 
       const tdType = document.createElement("td");
       tdType.setAttribute("data-label", "Type");
-      tdType.textContent = item.type === "brassage" ? "BRASSAGE AU PM" : item.type.toUpperCase();
-      tr.appendChild(tdType);
+     // tdType.textContent = item.type === "brassage" ? "BRASSAGE AU PM" : item.type.toUpperCase();
+	 let labelType = item.type;
+     if (labelType === "installation") labelType = "INSTALLATION COMPLÈTE";
+     else if (labelType === "remplacement") labelType = "REMPLACEMENT/DÉPLACEMENT PRISE";
+     else if (labelType === "brassage") labelType = "BRASSAGE AU PM";
+     else labelType = labelType.toUpperCase();
+     tdType.textContent = labelType;
+     tr.appendChild(tdType);
 
       const tdSousType = document.createElement("td");
       tdSousType.setAttribute("data-label", "Sous-type");
@@ -104,13 +110,15 @@ tr.appendChild(tdHeure);
   tdEtatBox.classList.add("etat-ok"); // ✅ CLASSE CSS POUR LA COULEUR (à définir d
   const boxState = removeAccents(item.etatBox.trim().toLowerCase());
   const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
-
-  if (item.sousType === "Standard" && isBoxValide) {
-    if (item.type === "installation") total += 25;
+  if (item.type === "brassage") {
+    total += 0; // Brassage = 0 €
+  }
+  else if (item.sousType === "Standard" && isBoxValide) {
+    if (item.type === "installation" || item.type === "remplacement") total += 25;
     else if (item.type === "plp") total += 20;
     else if (item.type === "sav") total += 15;
   } else {
-    if (item.type === "installation") {
+    if (item.type === "installation" || item.type === "remplacement") {
       if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
       else total += 45;
     } else if (item.type === "plp") total += 20;
