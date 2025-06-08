@@ -3,17 +3,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalInterventions = historique.length;
 
   const categories = {
-    installation: "installation",
-    plp: "plp",
-    sav: "sav",
-    brassage: "brassage",
-    remplacement: "remplacement"
+    installation: "Installation complète",
+    plp: "PLP",
+    sav: "SAV",
+    brassage: "Brassage au PM",
+    remplacement: "Remplacement/Déplacement prise"
   };
 
   const statsContainer = document.getElementById("statsContainer");
 
-  Object.entries(categories).forEach(([type, label]) => {
-    const data = historique.filter(item => item.type === type);
+  Object.entries(categories).forEach(([key, label]) => {
+    const data = historique.filter(item => item.type === label);
     const total = data.length;
 
     const successData = data.filter(item =>
@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Calcule des gains
     let gain = 0;
     data.forEach(item => {
-      if (type === "brassage") return; // gain 0
-      if (type === "sav") gain += 15;
-      else if (type === "plp") gain += 20;
-      else if (type === "installation" || type === "remplacement") {
+      if (label === "Brassage au PM") return; // pas de gain
+      if (label === "SAV") gain += 15;
+      else if (label === "PLP") gain += 20;
+      else if (label === "Installation complète" || label === "Remplacement/Déplacement prise") {
         if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") gain += 50;
         else gain += 45;
       }
