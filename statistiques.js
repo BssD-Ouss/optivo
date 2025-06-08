@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const historique = JSON.parse(localStorage.getItem("interventions")) || [];
-  const totalInterventions = historique.length;
+  const interventions = JSON.parse(localStorage.getItem("interventions")) || [];
+  const totalInterventions = interventions.length;
 
   const categories = {
     installation: "Installation complète",
@@ -12,27 +12,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const statsContainer = document.getElementById("statsContainer");
 
-  Object.entries(categories).forEach(([key, label]) => {
-    const data = historique.filter(item => item.type === label);
+  Object.entries(categories).forEach(([type, label]) => {
+    const data = interventions.filter(item => item.type === type);
     const total = data.length;
 
     const successData = data.filter(item =>
       item.resultat === "success" &&
-      (item.etatBox?.toLowerCase().includes("ok") || item.etatBox?.toLowerCase().includes("etape9"))
+      (
+        (item.etatBox && item.etatBox.toLowerCase().includes("ok")) ||
+        (item.etatBox && item.etatBox.toLowerCase().includes("etape9")) ||
+        (item.etatBox && item.etatBox.toLowerCase().includes("etape 9"))
+      )
     );
 
     const echec = total - successData.length;
-    const etatOK = successData.filter(item => item.etatBox?.toLowerCase().includes("ok")).length;
-    const etape9 = successData.filter(item => item.etatBox?.toLowerCase().includes("etape9")).length;
+    const etatOK = successData.filter(item => item.etatBox.toLowerCase().includes("ok")).length;
+    const etape9 = successData.filter(item =>
+      item.etatBox.toLowerCase().includes("etape9") ||
+      item.etatBox.toLowerCase().includes("etape 9")
+    ).length;
 
-    // Calcule des gains
     let gain = 0;
     data.forEach(item => {
-      if (label === "Brassage au PM") return; // pas de gain
-      if (label === "SAV") gain += 15;
-      else if (label === "PLP") gain += 20;
-      else if (label === "Installation complète" || label === "Remplacement/Déplacement prise") {
+      if (type === "brassage") return; // 0 €
+      if (type === "sav") gain += 15;
+      else if (type === "plp") gain += 20;
+      else if (type === "installation" || type === "remplacement") {
         if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") gain += 50;
+        else if (item.sousType === "Standard" && successData.includes(item)) gain += 25;
         else gain += 45;
       }
     });
@@ -43,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     bloc.className = "cat-stat";
     bloc.innerHTML = `
       <h2>${label}</h2>
-      <p><strong>Total :</strong> ${total} interventions</p>
+      <p><strong>Total :</strong> ${total} intervention(s)</p>
       <p><strong>Succès :</strong> ${successData.length} (${etatOK} OK + ${etape9} Étape 9)</p>
       <p><strong>Échecs :</strong> ${echec}</p>
       <p><strong>Gain :</strong> ${gain} €</p>
