@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalInterventions = historique.length;
 
   const categories = {
-    installation: "Installation complète",
-    plp: "PLP",
-    sav: "SAV",
-    brassage: "Brassage au PM",
-    remplacement: "Remplacement/Déplacement prise"
+    installation: "installation",
+    plp: "plp",
+    sav: "sav",
+    brassage: "brassage",
+    remplacement: "remplacement"
   };
 
   const statsContainer = document.getElementById("statsContainer");
