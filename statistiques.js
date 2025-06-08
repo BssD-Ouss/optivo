@@ -32,17 +32,24 @@ document.addEventListener("DOMContentLoaded", () => {
       item.etatBox.toLowerCase().includes("etape 9")
     ).length;
 
-    let gain = 0;
-    data.forEach(item => {
-      if (type === "brassage") return; // 0 €
-      if (type === "sav") gain += 15;
-      else if (type === "plp") gain += 20;
-      else if (type === "installation" || type === "remplacement") {
-        if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") gain += 50;
-        else if (item.sousType === "Standard" && successData.includes(item)) gain += 25;
-        else gain += 45;
-      }
-    });
+let gain = 0;
+data.forEach(item => {
+  const isSuccess = item.resultat === "success";
+  const boxState = item.etatBox?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
+
+  if (!isSuccess || !isBoxValide) return;
+
+  if (type === "brassage") return; // 0 €
+  if (type === "sav") gain += 15;
+  else if (type === "plp") gain += 20;
+  else if (type === "installation" || type === "remplacement") {
+    if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") gain += 50;
+    else if (item.sousType === "Standard") gain += 25;
+    else gain += 45;
+  }
+});
+
 
     const percent = totalInterventions ? ((total / totalInterventions) * 100).toFixed(1) : "0";
 
