@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const historique = JSON.parse(localStorage.getItem("historique")) || [];
+  const historique = JSON.parse(localStorage.getItem("interventions")) || [];
   const totalInterventions = historique.length;
 
   const categories = {
