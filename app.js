@@ -32,7 +32,6 @@ let lastGainValue = "0€";
   function updateHistorique() {
     historiqueTableBody.innerHTML = "";
     let total = 0;
-
     interventions.forEach((item, index) => {
       const tr = document.createElement("tr");
 
@@ -361,5 +360,5 @@ if ("Notification" in window && Notification.permission !== "granted") {
 // Mise à jour initiale
 updatePrevisionsUI();
 
-  
+
 });
