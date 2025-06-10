@@ -29,143 +29,144 @@ let lastGainValue = "0€";
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
-  function updateHistorique() {
-    historiqueTableBody.innerHTML = "";
-    let total = 0;
-    interventions.forEach((item, index) => {
-      const tr = document.createElement("tr");
+  function updateHistorique(filteredList = null) {
+  const list = filteredList || interventions;
+  historiqueTableBody.innerHTML = "";
+  let total = 0;
 
-      const tdDel = document.createElement("td");
-      tdDel.setAttribute("data-label", "Supprimer");
-      const btnDel = document.createElement("button");
-      btnDel.textContent = "🗑️";
-      btnDel.title = "Supprimer cette intervention";
-      btnDel.style.cursor = "pointer";
-      btnDel.addEventListener("click", () => {
-        if (confirm(`Supprimer l'intervention ${item.geton} ?`)) {
-          interventions.splice(index, 1);
-          localStorage.setItem("interventions", JSON.stringify(interventions));
-          updateHistorique();
-        }
-      });
-      tdDel.appendChild(btnDel);
-      tr.appendChild(tdDel);
-	  
-	const tdHeure = document.createElement("td");
-tdHeure.setAttribute("data-label", "Heure prévue");
-tdHeure.textContent = item.heureIntervention || "--";
-tdHeure.classList.add("heure-prevue"); // ✅ Applique la classe
-tr.appendChild(tdHeure);
+  list.forEach((item, index) => {
+    const tr = document.createElement("tr");
 
-      const tdDate = document.createElement("td");
-      tdDate.setAttribute("data-label", "Date");
-      const dateObj = new Date(item.date);
-      tdDate.textContent = dateObj.toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-      tr.appendChild(tdDate);
-	  
+    const tdDel = document.createElement("td");
+    tdDel.setAttribute("data-label", "Supprimer");
+    const btnDel = document.createElement("button");
+    btnDel.textContent = "🗑️";
+    btnDel.title = "Supprimer cette intervention";
+    btnDel.style.cursor = "pointer";
+    btnDel.addEventListener("click", () => {
+      if (confirm(`Supprimer l'intervention ${item.geton} ?`)) {
+        interventions.splice(index, 1);
+        localStorage.setItem("interventions", JSON.stringify(interventions));
+        updateHistorique();
+      }
+    });
+    tdDel.appendChild(btnDel);
+    tr.appendChild(tdDel);
 
-      const tdGeton = document.createElement("td");
-      tdGeton.setAttribute("data-label", "Geton");
-      tdGeton.textContent = item.geton;
-      tr.appendChild(tdGeton);
-	  
-	  const tdGrille = document.createElement("td");
-      tdGrille.setAttribute("data-label", "Grille");
-      tdGrille.textContent = item.grille || "--";
-      tr.appendChild(tdGrille);
+    const tdHeure = document.createElement("td");
+    tdHeure.setAttribute("data-label", "Heure prévue");
+    tdHeure.textContent = item.heureIntervention || "--";
+    tdHeure.classList.add("heure-prevue");
+    tr.appendChild(tdHeure);
 
-      const tdType = document.createElement("td");
-      tdType.setAttribute("data-label", "Type");
-     // tdType.textContent = item.type === "brassage" ? "BRASSAGE AU PM" : item.type.toUpperCase();
-	 let labelType = item.type;
-     if (labelType === "installation") labelType = "INSTALLATION COMPLÈTE";
-     else if (labelType === "remplacement") labelType = "REMPLACEMENT/DÉPLACEMENT PRISE";
-     else if (labelType === "brassage") labelType = "BRASSAGE AU PM";
-     else labelType = labelType.toUpperCase();
-     tdType.textContent = labelType;
-     tr.appendChild(tdType);
+    const tdDate = document.createElement("td");
+    tdDate.setAttribute("data-label", "Date");
+    const dateObj = new Date(item.date);
+    tdDate.textContent = dateObj.toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+    tr.appendChild(tdDate);
 
-      const tdSousType = document.createElement("td");
-      tdSousType.setAttribute("data-label", "Sous-type");
-      tdSousType.textContent = item.sousType;
-      tr.appendChild(tdSousType);
+    const tdGeton = document.createElement("td");
+    tdGeton.setAttribute("data-label", "Geton");
+    tdGeton.textContent = item.geton;
+    tr.appendChild(tdGeton);
 
-      const tdResultat = document.createElement("td");
-      tdResultat.setAttribute("data-label", "Résultat");
-      tdResultat.textContent = item.resultat.toUpperCase();
-      tr.appendChild(tdResultat);
+    const tdGrille = document.createElement("td");
+    tdGrille.setAttribute("data-label", "Grille");
+    tdGrille.textContent = item.grille || "--";
+    tr.appendChild(tdGrille);
 
-      const tdEtatBox = document.createElement("td");
-      tdEtatBox.setAttribute("data-label", "État Box");
+    const tdType = document.createElement("td");
+    tdType.setAttribute("data-label", "Type");
+    let labelType = item.type;
+    if (labelType === "installation") labelType = "INSTALLATION COMPLÈTE";
+    else if (labelType === "remplacement") labelType = "REMPLACEMENT/DÉPLACEMENT PRISE";
+    else if (labelType === "brassage") labelType = "BRASSAGE AU PM";
+    else labelType = labelType.toUpperCase();
+    tdType.textContent = labelType;
+    tr.appendChild(tdType);
+
+    const tdSousType = document.createElement("td");
+    tdSousType.setAttribute("data-label", "Sous-type");
+    tdSousType.textContent = item.sousType;
+    tr.appendChild(tdSousType);
+
+    const tdResultat = document.createElement("td");
+    tdResultat.setAttribute("data-label", "Résultat");
+    tdResultat.textContent = item.resultat.toUpperCase();
+    tr.appendChild(tdResultat);
+
+    const tdEtatBox = document.createElement("td");
+    tdEtatBox.setAttribute("data-label", "État Box");
 
     if (item.resultat === "success") {
-  tdEtatBox.textContent = item.etatBox.toUpperCase();  // ✅ MAJUSCULE
-  tdEtatBox.classList.add("etat-ok"); // ✅ CLASSE CSS POUR LA COULEUR (à définir d
-  const boxState = removeAccents(item.etatBox.trim().toLowerCase());
-  const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
-  if (item.type === "brassage") {
-    total += 0; // Brassage = 0 €
-  }
-  else if (item.sousType === "Standard" && isBoxValide) {
-    if (item.type === "installation" || item.type === "remplacement") total += 25;
-    else if (item.type === "plp") total += 20;
-    else if (item.type === "sav") total += 15;
-  } else {
-    if (item.type === "installation" || item.type === "remplacement") {
-      if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
-      else total += 45;
-    } else if (item.type === "plp") total += 20;
-    else if (item.type === "sav") total += 15;
-  }
-} else {
-        tdEtatBox.textContent = "NOK";
-        tdEtatBox.classList.add("etat-nok");
+      tdEtatBox.textContent = item.etatBox.toUpperCase();
+      tdEtatBox.classList.add("etat-ok");
+      const boxState = removeAccents(item.etatBox.trim().toLowerCase());
+      const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
+      if (item.type === "brassage") {
+        total += 0;
       }
+      else if (item.sousType === "Standard" && isBoxValide) {
+        if (item.type === "installation" || item.type === "remplacement") total += 25;
+        else if (item.type === "plp") total += 20;
+        else if (item.type === "sav") total += 15;
+      } else {
+        if (item.type === "installation" || item.type === "remplacement") {
+          if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
+          else total += 45;
+        } else if (item.type === "plp") total += 20;
+        else if (item.type === "sav") total += 15;
+      }
+    } else {
+      tdEtatBox.textContent = "NOK";
+      tdEtatBox.classList.add("etat-nok");
+    }
 
-      tr.appendChild(tdEtatBox);
+    tr.appendChild(tdEtatBox);
 
-      const tdMotif = document.createElement("td");
-      tdMotif.setAttribute("data-label", "Motif");
-      tdMotif.textContent = item.resultat === "echec" ? (item.motif || "--") : "--";
-      tr.appendChild(tdMotif);
-	  const tdNote = document.createElement("td");
-tdNote.setAttribute("data-label", "Note");
-tdNote.textContent = item.note || "--";
-tr.appendChild(tdNote);
-      historiqueTableBody.appendChild(tr);
+    const tdMotif = document.createElement("td");
+    tdMotif.setAttribute("data-label", "Motif");
+    tdMotif.textContent = item.resultat === "echec" ? (item.motif || "--") : "--";
+    tr.appendChild(tdMotif);
 
-    });
+    const tdNote = document.createElement("td");
+    tdNote.setAttribute("data-label", "Note");
+    tdNote.textContent = item.note || "--";
+    tr.appendChild(tdNote);
 
-    //totalElement.textContent = `${total}€`;
-	// Statistiques
-const totalCount = interventions.length;
-const successCount = interventions.filter(i => i.resultat === "success").length;
-const echecCount = interventions.filter(i => i.resultat === "echec").length;
+    historiqueTableBody.appendChild(tr);
+  });
 
-const successRate = totalCount > 0 ? ((successCount / totalCount) * 100).toFixed(1) : 0;
-const echecRate = totalCount > 0 ? ((echecCount / totalCount) * 100).toFixed(1) : 0;
+  // Statistiques
+  const totalCount = list.length;
+  const successCount = list.filter(i => i.resultat === "success").length;
+  const echecCount = list.filter(i => i.resultat === "echec").length;
 
-// Mise à jour du dashboard
-document.getElementById("stat-total").textContent = totalCount;
-document.getElementById("stat-success-count").textContent = successCount;
-document.getElementById("stat-success-rate").textContent = `${successRate}%`;
-document.getElementById("stat-echec-count").textContent = echecCount;
-document.getElementById("stat-echec-rate").textContent = `${echecRate}%`;
-lastGainValue = `${total}€`;
-if (isGainVisible) {
-  gainElement.textContent = lastGainValue;
-  toggleBtn.textContent = "👁️";
-} else {
-  gainElement.textContent = "••••";
-  toggleBtn.textContent = "🙈";
-}
+  const successRate = totalCount > 0 ? ((successCount / totalCount) * 100).toFixed(1) : 0;
+  const echecRate = totalCount > 0 ? ((echecCount / totalCount) * 100).toFixed(1) : 0;
+
+  document.getElementById("stat-total").textContent = totalCount;
+  document.getElementById("stat-success-count").textContent = successCount;
+  document.getElementById("stat-success-rate").textContent = `${successRate}%`;
+  document.getElementById("stat-echec-count").textContent = echecCount;
+  document.getElementById("stat-echec-rate").textContent = `${echecRate}%`;
+
+  lastGainValue = `${total}€`;
+  if (isGainVisible) {
+    gainElement.textContent = lastGainValue;
+    toggleBtn.textContent = "👁️";
+  } else {
+    gainElement.textContent = "••••";
+    toggleBtn.textContent = "🙈";
   }
+}
+
 
   function isGetonUnique(geton) {
     return !interventions.some(item => item.geton === geton);
