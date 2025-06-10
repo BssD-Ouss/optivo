@@ -361,5 +361,26 @@ if ("Notification" in window && Notification.permission !== "granted") {
 // Mise à jour initiale
 updatePrevisionsUI();
 
+// === FILTRE PAR DATE ===
+const filterDateInput = document.getElementById("filterDate");
+const clearFilterBtn = document.getElementById("clearDateFilter");
+
+filterDateInput.addEventListener("change", () => {
+  const selectedDate = filterDateInput.value;
+  if (!selectedDate) return updateHistorique(); // rien choisi, on réinitialise
+
+  const filtered = interventions.filter(item => {
+    const itemDate = new Date(item.date).toISOString().split("T")[0];
+    return itemDate === selectedDate;
+  });
+
+  updateHistorique(filtered); // on filtre
+});
+
+clearFilterBtn.addEventListener("click", () => {
+  filterDateInput.value = "";
+  updateHistorique(); // reset
+});
+
 
 });
