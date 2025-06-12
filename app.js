@@ -237,10 +237,10 @@ toggleBtn.addEventListener("click", () => {
 
   if (isGainVisible) {
     gainElement.textContent = lastGainValue;
-    toggleBtn.textContent = "👁️";
+    toggleBtn.textContent = "🚫️";
   } else {
     gainElement.textContent = "••••";
-    toggleBtn.textContent = "🙈";
+    toggleBtn.textContent = "✅​​";
   }
 });
 
