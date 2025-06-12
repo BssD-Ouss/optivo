@@ -160,10 +160,10 @@ let lastGainValue = "0€";
   lastGainValue = `${total}€`;
   if (isGainVisible) {
     gainElement.textContent = lastGainValue;
-    toggleBtn.textContent = "👁️";
+    toggleBtn.textContent = "🚫";
   } else {
     gainElement.textContent = "••••";
-    toggleBtn.textContent = "🙈";
+    toggleBtn.textContent = "✅​";
   }
 }
 
