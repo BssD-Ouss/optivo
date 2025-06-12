@@ -1,7 +1,7 @@
 {
   "name": "Optivo",
   "short_name": "Optivo",
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "description": "Mon Bilan Fibre pour les techniciens Free Mobile",
