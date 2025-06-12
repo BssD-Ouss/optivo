@@ -306,7 +306,7 @@ th.heure-prevue {
   width: 100%;
   height: 70px;
   background-color: #fff;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #ddd;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -326,15 +326,11 @@ th.heure-prevue {
   font-size: 24px;
   display: block;
   margin-bottom: 4px;
+  color: #000; /* toujours noir */
 }
 
-/* Style actif (sélectionné) */
-.nav-item.active,
-.nav-item:hover {
+/* Texte en rouge uniquement si actif */
+.nav-item.active {
   color: #e80000;
 }
 
-.nav-item.active .material-icons,
-.nav-item:hover .material-icons {
-  color: #e80000;
-}
