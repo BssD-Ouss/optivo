@@ -304,8 +304,8 @@ th.heure-prevue {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 70px;
-  background-color: #fff;
+  height: 60px;
+  background-color: #f2f2f2;
   border-top: 1px solid #ddd;
   display: flex;
   justify-content: space-around;
@@ -323,10 +323,10 @@ th.heure-prevue {
 }
 
 .nav-item .material-icons {
-  font-size: 24px;
+  font-size: 20px;
   display: block;
   margin-bottom: 4px;
-  color: #000; /* toujours noir */
+  color: #b9bbb6; /* toujours noir */
 }
 
 /* Texte en rouge uniquement si actif */
