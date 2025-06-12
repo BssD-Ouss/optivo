@@ -6,7 +6,10 @@ body {
   margin: 0;
   padding: 20px;
 }
-
+html, body {
+  height: 100%;
+  overflow: hidden; /* évite de scroller vers la barre d'adresse */
+}
 /* Conteneur principal */
 .container {
   max-width: 900px;
