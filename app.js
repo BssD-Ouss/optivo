@@ -112,7 +112,7 @@ let lastGainValue = "0€";
       if (item.type === "brassage") {
         total += 0;
       }
-      else if (item.sousType === "Standard" && isBoxValide) {
+      else if (item.sousType === "standard" && isBoxValide) {
         if (item.type === "installation" || item.type === "remplacement") total += 25;
         else if (item.type === "plp") total += 20;
         else if (item.type === "sav") total += 15;
