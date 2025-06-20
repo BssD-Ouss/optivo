@@ -65,12 +65,46 @@
       margin-top: 10px;
       display: none;
     }
+	.photo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.photo-container label {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.photo-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ccc;
+  transition: border-color 0.3s;
+}
+
+.photo-container p {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}
+
   </style>
 </head>
 <body>
 
   <div class="container">
     <h1>Mon Profil</h1>
+
+<div class="photo-container">
+    <label for="photoInput">
+      <img id="photoPreview" src="default-avatar.png" alt="Photo de profil">
+      <p>Touchez pour choisir une photo</p>
+    </label>
+    <input type="file" id="photoInput" accept="image/*" style="display:none" required>
+  </div>
+
 
     <label for="nom">Nom</label>
     <input type="text" id="nom">
@@ -90,24 +124,39 @@
   </div>
 
   <script>
+  const photoInput = document.getElementById("photoInput");
+const photoPreview = document.getElementById("photoPreview");
+
+photoInput.addEventListener("change", () => {
+  const file = photoInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      photoPreview.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
     function enregistrerProfil() {
       const nom = document.getElementById('nom').value.trim();
       const prenom = document.getElementById('prenom').value.trim();
       const email = document.getElementById('email').value.trim();
       const matricule = document.getElementById('matricule').value.trim();
+	  const photoPreview = document.getElementById('photoPreview');
       const error = document.getElementById('errorMsg');
 
-      if (!nom || !prenom || !email) {
-        error.style.display = "block";
-        return;
-      }
+      if (!nom || !prenom || !email || !photoPreview.src || photoPreview.src.includes("default-avatar.png")) {
+    error.style.display = "block";
+    return;
+  }
 
-      const profil = {
-        nom,
-        prenom,
-        email,
-        matricule
-      };
+        const profil = {
+    nom,
+    prenom,
+    email,
+    matricule,
+    photo: photoPreview.src // sauvegarde la photo en base64
+  };
 
       localStorage.setItem("profilTechnicien", JSON.stringify(profil));
 
@@ -123,7 +172,11 @@
         document.getElementById("prenom").value = profil.prenom || "";
         document.getElementById("email").value = profil.email || "";
         document.getElementById("matricule").value = profil.matricule || "";
-      }
+      // Affichage de la photo enregistrée
+    if (profil.photo) {
+      document.getElementById("photoPreview").src = profil.photo;
+    }
+	  }
     });
   </script>
 
