@@ -1,4 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+ const profil = JSON.parse(localStorage.getItem("profilTechnicien"));
+  
+  if (!profil || !profil.nom || !profil.prenom || !profil.email) {
+    // Redirige vers la page de profil si des champs sont manquants
+    window.location.href = "profile.html";
+  } else {
+    afficherBadgeProfilOK();
+  }	
+	
   const form = document.getElementById("interventionForm");
   const getonInput = document.getElementById("geton")
  const grilleInput = document.getElementById("grille");
@@ -381,6 +391,27 @@ clearFilterBtn.addEventListener("click", () => {
   filterDateInput.value = "";
   updateHistorique(); // reset
 });
+
+// Vérification profile complete ou non 
+function afficherBadgeProfilOK() {
+  const badge = document.getElementById("profilBadge");
+  if (badge) {
+    badge.innerHTML = `
+      <span style="
+        display: inline-flex;
+        align-items: center;
+        background-color: #e0f7e9;
+        color: #2e7d32;
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+      ">
+        ✅ Profil complété
+      </span>
+    `;
+  }
+}
 
 
 });
