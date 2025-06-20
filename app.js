@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!profil || !profil.nom || !profil.prenom || !profil.email) {
     // Redirige vers la page de profil si des champs sont manquants
     window.location.href = "profile.html";
-  } else {
-    afficherBadgeProfilOK();
-  }	
+  } //else {
+ //   afficherBadgeProfilOK();
+ // }	
 document.getElementById("supprimerProfil").addEventListener("click", () => {
   const confirmSuppression = confirm("Voulez-vous vraiment supprimer votre profil ? Cette action est irréversible.");
   

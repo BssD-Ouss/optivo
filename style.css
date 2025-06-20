@@ -333,4 +333,18 @@ th.heure-prevue {
 .nav-item.active {
   color: #e80000;
 }
+.profil-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mini-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e80000;
+}
 
