@@ -8,7 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     afficherBadgeProfilOK();
   }	
-	
+document.getElementById("supprimerProfil").addEventListener("click", () => {
+  const confirmSuppression = confirm("Voulez-vous vraiment supprimer votre profil ? Cette action est irréversible.");
+  
+  if (confirmSuppression) {
+    localStorage.removeItem("profilTechnicien");
+    alert("Profil supprimé avec succès.");
+    window.location.href = "profil.html"; // Redirige pour forcer à le remplir à nouveau
+  }
+});
   const form = document.getElementById("interventionForm");
   const getonInput = document.getElementById("geton")
  const grilleInput = document.getElementById("grille");
