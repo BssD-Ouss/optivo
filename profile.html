@@ -99,7 +99,7 @@
 
 <div class="photo-container">
     <label for="photoInput">
-      <img id="photoPreview" src="default-avatar.png" alt="Photo de profil">
+      <img id="photoPreview" src="images/default-avatar.png" alt="Photo de profil">
       <p>Touchez pour choisir une photo</p>
     </label>
     <input type="file" id="photoInput" accept="image/*" style="display:none" required>
@@ -130,7 +130,7 @@ const photoPreview = document.getElementById("photoPreview");
 if (profil.photo) {
   photoPreview.src = profil.photo;
 } else {
-  photoPreview.src = "default-avatar.png"; // chemin correct ici
+  photoPreview.src = "images/default-avatar"; // chemin correct ici
 }
 
 photoInput.addEventListener("change", () => {
