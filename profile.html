@@ -99,7 +99,7 @@
 
 <div class="photo-container">
     <label for="photoInput">
-      <img id="photoPreview" src="images/default-avatar.png" alt="Photo de profil">
+      <img id="photoPreview" src="images/user.png" alt="Photo de profil">
       <p>Touchez pour choisir une photo</p>
     </label>
     <input type="file" id="photoInput" accept="image/*" style="display:none" required>
@@ -127,12 +127,6 @@
   const photoInput = document.getElementById("photoInput");
 const photoPreview = document.getElementById("photoPreview");
 
-if (profil.photo) {
-  photoPreview.src = profil.photo;
-} else {
-  photoPreview.src = "images/default-avatar"; // chemin correct ici
-}
-
 photoInput.addEventListener("change", () => {
   const file = photoInput.files[0];
   if (file) {
@@ -151,7 +145,7 @@ photoInput.addEventListener("change", () => {
 	  const photoPreview = document.getElementById('photoPreview');
       const error = document.getElementById('errorMsg');
 
-      if (!nom || !prenom || !email || !photoPreview.src || photoPreview.src.includes("default-avatar.png")) {
+      if (!nom || !prenom || !email || !photoPreview.src || photoPreview.src.includes("user.png")) {
     error.style.display = "block";
     return;
   }
