@@ -127,6 +127,12 @@
   const photoInput = document.getElementById("photoInput");
 const photoPreview = document.getElementById("photoPreview");
 
+if (profil.photo) {
+  photoPreview.src = profil.photo;
+} else {
+  photoPreview.src = "default-avatar.png"; // chemin correct ici
+}
+
 photoInput.addEventListener("change", () => {
   const file = photoInput.files[0];
   if (file) {
