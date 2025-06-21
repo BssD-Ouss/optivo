@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }	
   
   const form = document.getElementById("interventionForm");
-  const getonInput = document.getElementById("geton")
+  const jetonInput = document.getElementById("jeton")
  const grilleInput = document.getElementById("grille");
   const typeInput = document.getElementById("type");
   const sousTypeInput = document.getElementById("sousType");
@@ -54,7 +54,7 @@ let lastGainValue = "0€";
     btnDel.title = "Supprimer cette intervention";
     btnDel.style.cursor = "pointer";
     btnDel.addEventListener("click", () => {
-      if (confirm(`Supprimer l'intervention ${item.geton} ?`)) {
+      if (confirm(`Supprimer l'intervention ${item.jeton} ?`)) {
         interventions.splice(index, 1);
         localStorage.setItem("interventions", JSON.stringify(interventions));
         updateHistorique();
@@ -81,10 +81,10 @@ let lastGainValue = "0€";
     });
     tr.appendChild(tdDate);
 
-    const tdGeton = document.createElement("td");
-    tdGeton.setAttribute("data-label", "Geton");
-    tdGeton.textContent = item.geton;
-    tr.appendChild(tdGeton);
+    const tdjeton = document.createElement("td");
+    tdjeton.setAttribute("data-label", "jeton");
+    tdjeton.textContent = item.jeton;
+    tr.appendChild(tdjeton);
 
     const tdGrille = document.createElement("td");
     tdGrille.setAttribute("data-label", "Grille");
@@ -178,8 +178,8 @@ let lastGainValue = "0€";
 }
 
 
-  function isGetonUnique(geton) {
-    return !interventions.some(item => item.geton === geton);
+  function isjetonUnique(jeton) {
+    return !interventions.some(item => item.jeton === jeton);
   }
 
   // Gère affichage dynamique au changement de sélection
@@ -198,7 +198,7 @@ let lastGainValue = "0€";
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 	const heureIntervention = heureInterventionInput.value;
-    const geton = getonInput.value.trim();
+    const jeton = jetonInput.value.trim();
     const type = typeInput.value;
     const sousType = sousTypeInput.value;
     const resultat = resultatInput.value;
@@ -208,13 +208,13 @@ let lastGainValue = "0€";
     const grille = grilleInput.value.trim();
 
 
-    if (!isGetonUnique(geton)) {
-      alert("Ce geton existe déjà !");
+    if (!isjetonUnique(jeton)) {
+      alert("Ce jeton existe déjà !");
       return;
     }
 
     const newEntry = {
-      geton,
+      jeton,
       type,
       sousType,
 	  note,
@@ -257,7 +257,7 @@ toggleBtn.addEventListener("click", () => {
   
   // =============== GESTION DES PREVISIONS DU LENDEMAIN =============== //
 const previsionForm = document.getElementById("previsionForm");
-const previsionGetonInput = document.getElementById("previsionGeton");
+const previsionjetonInput = document.getElementById("previsionjeton");
 const previsionGrilleInput = document.getElementById("previsionGrille");
 const previsionHeureInput = document.getElementById("previsionHeure");
 const listePrevisions = document.getElementById("listePrevisions");
@@ -276,8 +276,8 @@ function updatePrevisionsUI() {
 
   previsions.forEach((prevision, index) => {
     const li = document.createElement("li");
-	li.textContent = `${prevision.geton} (Grille: ${prevision.grille}, Heure: ${prevision.heure}) `;
-    const existe = interventions.some(i => i.geton === prevision.geton);
+	li.textContent = `${prevision.jeton} (Grille: ${prevision.grille}, Heure: ${prevision.heure}) `;
+    const existe = interventions.some(i => i.jeton === prevision.jeton);
     const actionBtn = document.createElement("button");
 
     if (existe) {
@@ -307,11 +307,11 @@ function updatePrevisionsUI() {
 // Ajout d'une prévision
 previsionForm.addEventListener("submit", (e) => {
   e.preventDefault();
- const geton = previsionGetonInput.value.trim();
+ const jeton = previsionjetonInput.value.trim();
  const grille = previsionGrilleInput.value.trim();
  const heure = previsionHeureInput.value;
-if (geton && !previsions.some(p => p.geton === geton)) {
-  previsions.push({ geton, grille, heure });
+if (jeton && !previsions.some(p => p.jeton === jeton)) {
+  previsions.push({ jeton, grille, heure });
     localStorage.setItem("previsions", JSON.stringify(previsions));
     updatePrevisionsUI();
     previsionForm.reset();
@@ -321,7 +321,7 @@ if (geton && !previsions.some(p => p.geton === geton)) {
 // Comparaison avec les interventions saisies
 btnComparer.addEventListener("click", () => {
 	const nonSaisis = previsions.filter(p =>
-  !interventions.some(i => i.geton === p.geton)
+  !interventions.some(i => i.jeton === p.jeton)
 );
   if (nonSaisis.length === 0) {
     alert("✅ Toutes les interventions prévues ont été saisies !");
@@ -330,7 +330,7 @@ btnComparer.addEventListener("click", () => {
     updatePrevisionsUI();
   } else {
   const details = nonSaisis.map(p => {
-  return `➡️ ${p.geton} | Grille: ${p.grille || "--"} | Heure: ${p.heure || "--"}`;
+  return `➡️ ${p.jeton} | Grille: ${p.grille || "--"} | Heure: ${p.heure || "--"}`;
 }).join("\n");
 
 alert("⚠️ Il reste des interventions non saisies :\n\n" + details);
@@ -347,7 +347,7 @@ function verifierEtNotifier() {
 
   if (heure === 14 && minute === 15 && previsions.length > 0) {
     const nonSaisis = previsions.filter(p =>
-      !interventions.some(i => i.geton === p.geton)
+      !interventions.some(i => i.jeton === p.jeton)
     );
 
     if (nonSaisis.length > 0) {
