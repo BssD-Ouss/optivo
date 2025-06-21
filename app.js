@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!profil || !profil.nom || !profil.prenom || !profil.email) {
     // Redirige vers la page de profil si des champs sont manquants
     window.location.href = "profile.html";
-  } //else {
- //   afficherBadgeProfilOK();
- // }	
+  } else {
+   afficherBadgeProfilOK();
+  }	
 document.getElementById("supprimerProfil").addEventListener("click", () => {
   const confirmSuppression = confirm("Voulez-vous vraiment supprimer votre profil ? Cette action est irréversible.");
   
@@ -402,24 +402,14 @@ clearFilterBtn.addEventListener("click", () => {
 
 // Vérification profile complete ou non 
 function afficherBadgeProfilOK() {
-  const badge = document.getElementById("profilBadge");
-  if (badge) {
-    badge.innerHTML = `
-      <span style="
-        display: inline-flex;
-        align-items: center;
-        background-color: #e0f7e9;
-        color: #2e7d32;
-        font-weight: bold;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 13px;
-      ">
-        ✅ Profil complété
-      </span>
-    `;
-  }
+  const container = document.getElementById("profilHeader");
+  // Remplit le bloc profil avec photo et message
+  container.innerHTML = `
+    <img src="${profil.photo}" alt="Photo de profil" class="mini-photo">
+    <span id="greetingText">Bonjour ${profil.prenom}</span>
+  `;
 }
+
 
 
 });
