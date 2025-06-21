@@ -121,6 +121,8 @@
     <div class="error" id="errorMsg">Veuillez remplir tous les champs requis.</div>
 
     <button onclick="enregistrerProfil()">Enregistrer</button>
+	<button id="supprimerProfil" style="background-color: #b71c1c; color: white; padding: 10px; border: none; border-radius: 6px; margin-top: 15px;">
+
   </div>
 
   <script>
@@ -178,6 +180,16 @@ photoInput.addEventListener("change", () => {
     }
 	  }
     });
+	// supprimer profile
+	document.getElementById("supprimerProfil").addEventListener("click", () => {
+  const confirmSuppression = confirm("Voulez-vous vraiment supprimer votre profil ? Cette action est irréversible.");
+  
+  if (confirmSuppression) {
+    localStorage.removeItem("profilTechnicien");
+    alert("Profil supprimé avec succès.");
+    window.location.href = "profil.html"; // Redirige pour forcer à le remplir à nouveau
+  }
+});
   </script>
 
 </body>
