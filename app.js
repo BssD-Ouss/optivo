@@ -402,6 +402,51 @@ function afficherBadgeProfilOK() {
   `;
 }
 
+// Generer le BILAN 
+document.getElementById("btnGenererBilan").addEventListener("click", () => {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const profil = JSON.parse(localStorage.getItem("profilTechnicien")) || {};
+  const interventions = JSON.parse(localStorage.getItem("interventions")) || [];
+
+  // En-tête
+  doc.setFontSize(16);
+  doc.text("Bilan mensuel du technicien", 14, 20);
+
+  // Infos perso
+  doc.setFontSize(12);
+  doc.text(`Nom: ${profil.nom || "N/A"}`, 14, 30);
+  doc.text(`Prénom: ${profil.prenom || "N/A"}`, 14, 37);
+  doc.text(`Email: ${profil.email || "N/A"}`, 14, 44);
+  doc.text(`Matricule: ${profil.matricule || "N/A"}`, 14, 51);
+
+  // Interventions
+  const rows = interventions.map(item => [
+    item.date || "",
+    item.nomClient || "",
+    item.adresse || "",
+    item.type || "",
+    item.gain ? `${item.gain}€` : "0€"
+  ]);
+
+  doc.autoTable({
+    startY: 60,
+    head: [["Date", "Client", "Adresse", "Type", "Gain"]],
+    body: rows,
+  });
+
+  const totalGain = interventions.reduce((sum, i) => sum + (parseFloat(i.gain) || 0), 0);
+
+  // Résumé en bas
+  const totalY = doc.previousAutoTable.finalY + 10;
+  doc.setFontSize(12);
+  doc.text(`Nombre total d'interventions : ${interventions.length}`, 14, totalY);
+  doc.text(`Chiffre d'affaires : ${totalGain.toFixed(2)} €`, 14, totalY + 7);
+
+  // Sauvegarde
+  doc.save("bilan_technicien.pdf");
+});
 
 
 });
