@@ -127,10 +127,15 @@ let lastGainValue = "0€";
         else if (item.type === "plp") total += 20;
         else if (item.type === "sav") total += 15;
       } else {
-        if (item.type === "installation" || item.type === "remplacement") {
-          if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") total += 50;
-          else total += 45;
-        } else if (item.type === "plp") total += 20;
+     if (item.type === "installation" || item.type === "remplacement") {
+  if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") {
+    total += 50;
+  } else if (item.sousType === "souterrain") {
+    total += 40; // ✅ correction ici
+  } else {
+    total += 45;
+  }
+} else if (item.type === "plp") total += 20;
         else if (item.type === "sav") total += 15;
       }
     } else {
