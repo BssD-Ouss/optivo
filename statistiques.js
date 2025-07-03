@@ -45,6 +45,7 @@ data.forEach(item => {
   else if (type === "plp") gain += 20;
   else if (type === "installation" || type === "remplacement") {
     if (item.sousType === "aerienne" || item.sousType === "aerosouterrain") gain += 50;
+	else if (item.sousType === "souterrain") gain += 40;
     else if (item.sousType === "Standard") gain += 25;
     else gain += 45;
   }
