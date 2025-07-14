@@ -25,6 +25,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
   
+//***********************************logique des bilans chaque mois*************************************
+
+// ✅ ARCHIVAGE automatique des interventions du mois précédent
+(function archiverMoisPrecedent() {
+  const now = new Date();
+  const moisActuel = now.getMonth(); // 0 = janvier
+  const anneeActuelle = now.getFullYear();
+
+  // Marqueur pour ne pas archiver plusieurs fois
+  const cleDernierArchivage = "dernierArchivage";
+  const dernierArchivage = localStorage.getItem(cleDernierArchivage);
+
+  // Si déjà archivé ce mois-ci, on ne refait rien
+  const cleArchivageCourante = `${moisActuel + 1}_${anneeActuelle}`;
+  if (dernierArchivage === cleArchivageCourante) return;
+
+  // Sinon on traite
+  const interventionsCourantes = [];
+  const interventionsArchivees = [];
+
+  interventions.forEach(i => {
+    const dateI = new Date(i.date);
+    const moisI = dateI.getMonth();
+    const anneeI = dateI.getFullYear();
+
+    if (moisI === moisActuel && anneeI === anneeActuelle) {
+      interventionsCourantes.push(i);
+    } else if (
+      // On archive seulement le mois précédent
+      (moisI === (moisActuel === 0 ? 11 : moisActuel - 1)) &&
+      (anneeI === (moisActuel === 0 ? anneeActuelle - 1 : anneeActuelle))
+    ) {
+      interventionsArchivees.push(i);
+    } else {
+      // Tout ce qui est plus ancien est aussi archivé dans le même lot
+      interventionsArchivees.push(i);
+    }
+  });
+
+  if (interventionsArchivees.length > 0) {
+    const moisNom = [
+      "janvier", "fevrier", "mars", "avril", "mai", "juin",
+      "juillet", "aout", "septembre", "octobre", "novembre", "decembre"
+    ];
+    const nomCleArchive = `interventions_${moisNom[(moisActuel === 0 ? 11 : moisActuel - 1)]}_${moisActuel === 0 ? anneeActuelle - 1 : anneeActuelle}`;
+
+    localStorage.setItem(nomCleArchive, JSON.stringify(interventionsArchivees));
+    localStorage.setItem("interventions", JSON.stringify(interventionsCourantes));
+    localStorage.setItem(cleDernierArchivage, cleArchivageCourante);
+  }
+})();
+//************************************************************************
+  
+  
+  
 // Variables pour affichage du total des gains
 const gainElement = document.getElementById("stat-total-gain");
 const toggleBtn = document.getElementById("toggleGainVisibility");
@@ -121,7 +176,7 @@ let lastGainValue = "0€";
       const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
       if (item.type === "brassage") {
         total += 0;
-      }
+      }$ n
       else if (item.sousType === "standard" && isBoxValide) {
         if (item.type === "installation" || item.type === "remplacement") total += 25;
         else if (item.type === "plp") total += 20;
