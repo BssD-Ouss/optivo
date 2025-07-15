@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
-  
+  /*
 //***********************************logique des bilans chaque mois*************************************
 
 // ✅ ARCHIVAGE automatique des interventions du mois précédent
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("interventions", JSON.stringify(interventionsCourantes));
     localStorage.setItem(cleDernierArchivage, cleArchivageCourante);
   }
-})();
+})();*/
 //************************************************************************
   
   
@@ -176,7 +176,7 @@ let lastGainValue = "0€";
       const isBoxValide = boxState === "ok" || boxState === "etape 9" || boxState === "etape9";
       if (item.type === "brassage") {
         total += 0;
-      }$ n
+      }
       else if (item.sousType === "standard" && isBoxValide) {
         if (item.type === "installation" || item.type === "remplacement") total += 25;
         else if (item.type === "plp") total += 20;
