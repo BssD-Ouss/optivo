@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
-  /*
+  
 //***********************************logique des bilans chaque mois*************************************
 
 // ✅ ARCHIVAGE automatique des interventions du mois précédent
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("interventions", JSON.stringify(interventionsCourantes));
     localStorage.setItem(cleDernierArchivage, cleArchivageCourante);
   }
-})();*/
+})();
 //************************************************************************
   
   
