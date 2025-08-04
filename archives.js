@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!selectedKey) return;
 
     const data = JSON.parse(localStorage.getItem(selectedKey) || "[]");
+	
+	// ➕ Affichage du nombre d’interventions
+  const compteur = document.getElementById("compteurInterventions");
+  compteur.textContent = `🧾 ${data.length} intervention(s) affichée(s) pour ${selectedKey.replace("interventions_", "").replace("_", " ").toUpperCase()}`;
+
 
     tableBody.innerHTML = "";
     data.forEach(item => {
