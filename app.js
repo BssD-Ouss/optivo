@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const historiqueTableBody = document.querySelector("#historique tbody");
   const heureInterventionInput = document.getElementById("heureIntervention");
   const noteInput = document.getElementById("note");
+  const dateInterventionInput = document.getElementById("dateIntervention");
+
 
 
   let interventions = JSON.parse(localStorage.getItem("interventions") || "[]");
@@ -271,6 +273,11 @@ let lastGainValue = "0€";
       alert("Ce geton existe déjà !");
       return;
     }
+	const dateIntervention = dateInterventionInput.value;
+    if (!dateIntervention) {
+    alert("Veuillez sélectionner une date d'intervention");
+    return;
+    }
 
     const newEntry = {
       geton,
@@ -282,7 +289,7 @@ let lastGainValue = "0€";
       etatBox: resultat === "success" ? etatBox : "",
       motif: resultat === "echec" ? motif : "",
 	  grille,
-      date: new Date().toISOString()
+      date: new Date(dateIntervention).toISOString() // ✅ Utilise la date choisie
     };
 
     interventions.push(newEntry);
