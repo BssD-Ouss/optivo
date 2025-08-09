@@ -464,6 +464,7 @@ filterGetonInput.addEventListener("input", () => {
 // === RESET AND CLEAR HISTORIQUE ===
 clearFilterBtn.addEventListener("click", () => {
   filterDateInput.value = "";
+    filterGetonInput.value = "";
   updateHistorique(); // reset
 });
 
