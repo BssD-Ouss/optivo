@@ -145,9 +145,16 @@
   
 
 <section>
-  <label for="filterDate">📅 Filtrer par date :</label>
+  <!-- Filtre par date -->
+  <label for="filterDate">📅 Filtrer par DATE :</label>
   <input type="date" id="filterDate" />
+   <!-- Filtre par geton -->
+  <div style="margin-top: 10px;">
+  <label for="filterGeton">Filtrer par GETON :</label>
+  <input type="text" id="filterGeton" placeholder="Saisir le jeton...">
+  </div>
   <button id="clearDateFilter">❌ Réinitialiser</button>
+ 
 </section>
 <div style="text-align: right; margin: 10px 0;">
   <button id="btnGenererBilan" class="btn-comparer">📄 Générer Bilan PDF</button>

@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
 //************************************************************************
   
   
-  
 // Variables pour affichage du total des gains
 const gainElement = document.getElementById("stat-total-gain");
 const toggleBtn = document.getElementById("toggleGainVisibility");
@@ -447,6 +446,22 @@ filterDateInput.addEventListener("change", () => {
   updateHistorique(filtered); // on filtre
 });
 
+// === FILTRE PAR GETON ===
+const filterGetonInput = document.getElementById("filterGeton");
+const clearGetonBtn = document.getElementById("clearGetonFilter");
+
+filterGetonInput.addEventListener("input", () => {
+  const searchValue = filterGetonInput.value.trim().toLowerCase();
+  if (!searchValue) return updateHistorique(); // si vide → réinitialise
+
+  const filtered = interventions.filter(item =>
+    (item.geton || "").toLowerCase().includes(searchValue)
+  );
+
+  updateHistorique(filtered); // on filtre uniquement par geton
+});
+
+// === RESET AND CLEAR HISTORIQUE ===
 clearFilterBtn.addEventListener("click", () => {
   filterDateInput.value = "";
   updateHistorique(); // reset
